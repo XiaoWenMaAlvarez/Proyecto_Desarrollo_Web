@@ -1,0 +1,145 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/principal.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+
+<main>
+    <h1 class="main-title">Noticias destacadas</h1>
+    <div id="carouselExampleIndicators" class="carousel slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      </div>
+
+      <!-- Ítems del carrusel -->
+      <div class="carousel-inner">
+
+        <!-- Noticia 1-->
+        <div class="carousel-item active">
+          <a href="{% url 'noticia' %}">
+            <div class="news-title-container">
+              <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+              </h2>
+            </div>
+              <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001420240401153042/A_UNO_1491060.jpg" class="d-block w-100" alt="...">
+          </a>
+        </div>  
+
+        <!-- Noticia 2-->
+        <div class="carousel-item">
+          <a href="{% url 'noticia' %}">
+            <div class="news-title-container">
+              <h2 class="news-title">Irán amenaza a Israel con "una dura respuesta"</h2>
+            </div>
+              <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000000420240401142301/bombardeo-embajada-irani-siria.jpg" class="d-block w-100" alt="...">
+          </a>
+        </div>  
+
+        <!-- Noticia 3-->
+        <div class="carousel-item">
+          <a href="{% url 'noticia' %}">
+            <div class="news-title-container">
+              <h2 class="news-title">Presidente Boric por disparos en Lo Valledor: "Un caso muy violento, no le podemos bajar el perfil"</h2>
+            </div>
+              <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001420240401130529/gabriel-boric-lo-valledor-caso-disparos.jpg" class="d-block w-100" alt="...">
+          </a>
+        </div>  
+
+        <!-- Noticia 4-->
+        <div class="carousel-item">
+          <a href="{% url 'noticia' %}">
+            <div class="news-title-container">
+              <h2 class="news-title">Más problemas para WOM: empresa se acoge a la Ley de Quiebras en Estados Unidos</h2>
+            </div>
+              <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001420240401145458/Aton_855741.jpg" class="d-block w-100" alt="...">
+          </a>
+        </div>  
+
+      </div>
+
+      <!-- Fin de Ítems del carrusel -->
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    
+    <!-- Fin del carrusel-->
+
+    <!-- Formulario de búsqueda -->
+    <div class="container">
+      <h1 class="search-title">Búsqueda por categoría, periodista o palabra clave</h1>
+      <form class="d-flex search-form" role="search">
+        <input class="form-control me-2" type="search" placeholder="Ingresa tu búsqueda" aria-label="Search">
+        <button class="btn btn-search" type="submit">Buscar</button>
+      </form>
+    </div>
+    <!-- Fin del formulario de búsqueda -->
+    
+    <!-- Resultados de búsqueda -->
+    <div class="container search-result">
+      <h2 class="search-text">Resultados de búsqueda</h2>
+
+      <div class="news-container">
+
+        <!-- Noticia 1-->
+        <div class="news">
+          <a href="{% url 'noticia' %}">
+            <img class="news-banner" src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001520240401132113/marcianeke-live-amenazas.jpg" alt="">
+          </a>
+          <div class="news-text">
+            <a href="{% url 'noticia' %}">
+              <h2 class="news-title">"Me quieren pegar un balazo": el live donde Marcianeke denunció amenaza</h2>
+            </a>
+            <p class="news-description hide">por <a href="{% url 'periodista' %}" class="journalist">Juan Perez</a></p>
+            <p class="news-description">Miércoles 27 Marzo, 2024</p>
+          </div>
+        </div>
+
+        <!-- Noticia 2-->
+        <div class="news">
+          <a href="{% url 'noticia' %}">
+            <img class="news-banner" src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000000720240401093310/Aton_706135_1.jpg" alt="">
+          </a>
+          <div class="news-text">
+            <a href="{% url 'noticia' %}">
+              <h2 class="news-title">Imacec de 4,5% en febrero se ubica en la parte alta de expectativas</h2>
+            </a>
+            <p class="news-description hide">por <a href="{% url 'periodista' %}" class="journalist">Juan Perez</a></p>
+            <p class="news-description">Martes 26 Marzo, 2024</p>
+          </div>
+        </div>
+
+        <!-- Noticia 3-->
+        <div class="news">
+          <a href="{% url 'noticia' %}">
+            <img class="news-banner" src="https://www.24horas.cl/24horas/site/artic/20240326/imag/foto_0000000520240326160215/WhatsApp_Image_2024-03-27_at_1.08.08_PM.jpeg" alt="">
+          </a>
+          <div class="news-text">
+            <a href="{% url 'noticia' %}">
+              <h2 class="news-title">13 años de Estadio Seguro: los 10 delitos más sancionados del fútbol chileno</h2>
+            </a>
+            <p class="news-description hide">por <a href="{% url 'periodista' %}" class="journalist">Juan Perez</a></p>
+            <p class="news-description">Lunes 25 Marzo, 2024</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+  {% endblock %}

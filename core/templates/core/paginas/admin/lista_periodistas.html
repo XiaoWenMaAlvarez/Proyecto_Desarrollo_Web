@@ -1,0 +1,44 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/lista_noticias_publicadas.css' %}">
+  {% endblock %}
+
+{% block content %}
+  <main>
+    <table class="table container">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Link</th>
+          <th scope="col">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Juan Alberto Perez Gonzales</th>
+          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
+          <td class="link"><a href="#">Eliminar</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Alicia Fernanda Soto Allende</th>
+          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
+          <td class="link"><a href="#">Eliminar</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Fernando Alexander Rojas Concha</th>
+          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
+          <td class="link"><a href="#">Eliminar</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="button-container">
+      <a href="{% url 'crear_periodista' %}"><button type="button" class="btn btn-success btn-lg">Crear nueva cuenta</button></a>
+    </div>
+  </main>
+{% endblock %}
+
+  

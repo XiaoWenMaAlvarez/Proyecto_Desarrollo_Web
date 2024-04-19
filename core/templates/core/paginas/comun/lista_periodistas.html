@@ -1,0 +1,57 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+<link rel="stylesheet" href="{% static 'core/css/lista_periodistas.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+  <h1 class="titulo-principal">Periodista</h1>
+
+  <div class="card-container container">
+
+    <!-- Periodista 1-->
+    <div class="card" >
+      <img class="image-card" src="/img/periodista1.jpg" alt="">
+      <div class="card-body">
+        <h5 class="card-title">Javiera alvarez</h5>
+        <p class="card-text">Periodista de Prensa Caos News. Especializado en periodismo deportivo</p>
+        <a href="{% url 'periodista' %}" class="btn btn-primary">Ver noticias</a>
+      </div>
+    </div>
+
+    <!-- Periodista 2-->
+    <div class="card" >
+      <img class="image-card" src="/img/periodista2.jpg" alt="">
+      <div class="card-body">
+        <h5 class="card-title">Pedro Monsalves</h5>
+        <p class="card-text">Periodista de Prensa Caos News. Especializado en política</p>
+        <a href="{% url 'periodista' %}" class="btn btn-primary">Ver noticias</a>
+      </div>
+    </div>
+
+    <!-- Periodista 1-->
+    <div class="card" >
+      <img class="image-card" src="/img/periodista3.jpg" alt="">
+      <div class="card-body">
+        <h5 class="card-title">Francisca Toledo</h5>
+        <p class="card-text">Periodista de Prensa Caos News. Especializado en periodismo climático</p>
+        <a href="{% url 'periodista' %}" class="btn btn-primary">Ver noticias</a>
+      </div>
+    </div>
+
+    <!-- Periodista 2-->
+    <div class="card" >
+      <img class="image-card" src="/img/periodista1.jpg" alt="">
+      <div class="card-body">
+        <h5 class="card-title">Javiera alvarez</h5>
+        <p class="card-text">Periodista de Prensa Caos News. Especializado en periodismo deportivo</p>
+        <a href="{% url 'periodista' %}" class="btn btn-primary">Ver noticias</a>
+      </div>
+    </div>
+    
+  </div>
+</main>
+{% endblock %}

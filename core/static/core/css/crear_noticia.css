@@ -1,0 +1,18 @@
+.main-title {
+  margin-bottom: 2rem;
+}
+
+.notice-form {
+  margin-bottom: 2rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}

@@ -1,0 +1,53 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/crear_noticia.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="container">
+    <h1 class="main-title">Publicación de noticia.</h1>
+    <form action="#">
+      <div class="notice-form">
+        <label for="notice-title" class="form-label subtitle">Título de la noticia</label>
+        <input type="text" class="form-control" id="notice-title">
+      </div>
+
+      <div class="notice-form">
+        <label for="notice-location" class="form-label subtitle">Ubicación de la noticia</label>
+        <input type="text" class="form-control" id="notice-location">
+      </div>
+
+      <div class="notice-form">
+        <h2 class="subtitle">Seleccione la categoría de la noticia</h2>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Seleccione la categoría</option>
+          <option value="1">Política</option>
+          <option value="2">Economía</option>
+          <option value="3">Deporte</option>
+        </select>
+      </div>
+
+      <div class="notice-form">
+        <label for="notice-body" class="form-label">Cuerpo de la noticia</label>
+        <textarea class="form-control" id="notice-body" rows="15"></textarea>
+      </div>
+      
+      <div class="notice-form">
+        <label for="formFile" class="form-label">Portada de la noticia (obligatorio)</label>
+        <input class="form-control" type="file" id="formFile">
+      </div>
+      <div class="notice-form">
+        <label for="formFileMultiple" class="form-label">Galería de imágenes de la noticia (opcional)</label>
+        <input class="form-control" type="file" id="formFileMultiple" multiple>
+      </div>
+
+      <div class="buttons-container">
+        <button type="button" class="btn btn-success">Publicar noticia</button>
+        <button type="button" class="btn btn-secondary">Cancelar publicación</button>
+      </div>
+    </form>
+  </main>
+  {% endblock %}

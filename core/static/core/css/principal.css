@@ -1,0 +1,163 @@
+main {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.carousel {
+  margin-bottom: 3rem;
+}
+
+.carousel-item {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+} 
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-item img::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+} 
+
+.carousel .news-title-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, .67);
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+}
+
+.carousel .news-title {
+  width: 80%;
+  color: white;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+@media screen and (min-width: 1024px) {
+  .carousel-item {
+    width: 100%;
+    height: 90vh;
+  } 
+}
+
+.search-title {
+  margin-bottom: 2rem;
+}
+
+.search-form {
+  margin-bottom: 2rem;
+}
+
+.btn-search {
+  color: white;
+  background-color: #2b3d4f;
+}
+
+.btn-search:hover {
+  background-color: darkblue;
+  color: white;
+}
+
+.btn-search:active {
+  border-color: #2b3d4f;
+  color: #2b3d4f;
+  background-color: white;
+}
+
+.search-text {
+  margin-bottom: 2rem;
+}
+
+.search-result .news-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-result .news {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.search-result .news a {
+  flex-shrink: 0;
+}
+
+.search-result .news-banner {
+  width: 7.5rem;
+  height: 5rem;
+  margin-right: 1rem;
+}
+
+.search-result .news-title {
+  font-size: 1rem;
+}
+
+.search-result .news-description {
+  font-size: .75rem;
+}
+
+.search-result .news .journalist {
+  color: rgb(43, 115, 180);
+}
+
+.search-result .news .hide {
+  display: none;
+}
+
+@media screen and (min-width: 734px) {
+  .search-result .news {
+    margin-bottom: 2.5rem;
+  }
+
+  .search-result .news-banner {
+    width: 17rem;
+    height: 9.5rem;
+    margin-right: 2rem;
+  }
+
+  .search-result .news-title {
+    font-size: 1.25rem;
+  }
+  
+  .search-result .news-description {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .main-title {
+    margin-bottom: 3rem;
+    font-size: 5rem;
+    font-weight: bold;
+  }
+
+  .search-result .news-container{
+    align-items: start;
+  }
+
+  .search-result .news {
+    max-width: 80vw;
+  }
+
+  .search-result .news .hide {
+    display: block;
+  }
+
+}

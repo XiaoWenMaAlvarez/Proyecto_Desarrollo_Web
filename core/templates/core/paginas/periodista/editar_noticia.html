@@ -1,0 +1,65 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/crear_noticia.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main>
+  <div class="container">
+    <h1 class="main-title">Publicación de noticia.</h1>
+    <form action="#">
+      <div class="notice-form">
+        <label for="notice-title" class="form-label subtitle">Título de la noticia</label>
+        <input type="text" class="form-control" id="notice-title"
+        value="Jackson demanda a 23 diputados de la UDI tras vincularlo en caso Convenios y robo de computadores">
+      </div>
+
+      <div class="notice-form">
+        <label for="notice-location" class="form-label subtitle">Ubicación de la noticia</label>
+        <input type="text" class="form-control" id="notice-location" value="Chile">
+      </div>
+
+      <div class="notice-form">
+        <h2 class="subtitle">Seleccione la categoría de la noticia</h2>
+        <select class="form-select" aria-label="Default select example">
+          <option>Seleccione la categoría</option>
+          <option value="1" selected>Política</option>
+          <option value="2">Economía</option>
+          <option value="3">Deporte</option>
+        </select>
+      </div>
+
+      <div class="notice-form">
+        <label for="notice-body" class="form-label">Cuerpo de la noticia</label>
+        <textarea class="form-control" id="notice-body" rows="15">El ex ministro de desarrollo social demandó a 23 diputados de la UDI que en su momento firmaron una carta dirigida al Presidente Gabriel Boric vinculándolo al caso Convenios y al robo de computadores desde el ministerio de Desarrollo Social.
+
+En la acción judicial, presentada por el abogado Miguel Schurmann, el exministro acusa “daños a la honra” por medio de la utilización de “premisas falaces” y vinculaciones a “líos de plata”, por lo que exige disculpas públicas y una indemnización que deberá revisarse en la instancia correspondiente.
+
+“Es una lástima tener que llegar a instancias judiciales, pero si queremos tener una mejor convivencia democrática es bueno afirmar que NO TODO VALE. Hace 8 meses parlamentarios UDI firmaron una carta difamándome, por supuesto, sin prueba alguna”, escribió Jackson en su cuenta de X. 
+
+Miguel Schurmann, abogado de Jackson, sostuvo al respecto: “hemos presentado una demanda por difamación en contra de los diputados qué suscribieron la carta dirigida al SE Presidente Boric en que le imputan al ex ministro Jackson participación directa en el robo de computadores en el Mideso y en el denominado caso convenios”.
+
+“Luego de meses esperando una retracción de esos dichos sin que ocurra es necesario que la justicia los condene a dicha retracción. No todo vale en política, la constitución y las leyes protegen la honra de todos los ciudadanos frente a ataques tan claros e injustificados como este”, expuso también.
+        </textarea>
+      </div>
+      
+      <div class="notice-form">
+        <label for="formFile" class="form-label">Portada de la noticia (obligatorio)</label>
+        <input class="form-control" type="file" id="formFile">
+      </div>
+      <div class="notice-form">
+        <label for="formFileMultiple" class="form-label">Galería de imágenes de la noticia (opcional)</label>
+        <input class="form-control" type="file" id="formFileMultiple" multiple>
+      </div>
+
+      <div class="buttons-container">
+        <button type="button" class="btn btn-success">Publicar noticia</button>
+        <button type="button" class="btn btn-secondary">Cancelar publicación</button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,42 @@
+.titulo-principal {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 20rem;
+    text-align: center;
+    border: 3px solid #2b3d4f;
+    color: white;
+    background-color: #2b3d4f;
+    margin-bottom: 2rem;
+}
+
+.image-container {
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media screen and (min-width: 1024px) {
+    .card-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        margin-right: 2rem;
+        flex-shrink: 0;
+    }
+}

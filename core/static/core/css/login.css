@@ -1,0 +1,31 @@
+body {
+  color: white;
+  background-color: #2b3d4f;
+}
+
+.image-container {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.logo {
+  width: 15rem;
+}
+
+.main-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+button {
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+}

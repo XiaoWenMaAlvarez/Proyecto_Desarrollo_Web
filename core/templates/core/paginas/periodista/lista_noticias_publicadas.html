@@ -1,0 +1,41 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/lista_noticias_publicadas.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main>
+    <table class="table container">
+      <thead>
+        <tr>
+          <th scope="col">Estado</th>
+          <th scope="col">Título</th>
+          <th scope="col">Link</th>
+          <th scope="col">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Pendiente</th>
+          <td>Jackson demanda a 23 diputados de la UDI tras vincularlo en caso Convenios y robo de computadores</td>
+          <td class="link"><a href="{% url 'editar_noticia' %}">Editar</a></td>
+          <td class="link"><a href="#">Eliminar</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Aprobada</th>
+          <td>Vallejo lamenta "utilización política" de la oposición tras disparos en Lo Valledor: "Pan de cada día"</td>
+          <td class="link"><a href="{% url 'editar_noticia' %}">Editar</a></td>
+          <td class="link"><a href="#">Eliminar</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Rechazada</th>
+          <td>Arrendador de Marcianeke lo amenaza con pistola para que deje vivienda en Colina: hay tres detenidos</td>
+          <td class="link" colspan="2"><a href="{% url 'noticia_rechazada' %}">Ver motivo</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+{% endblock %}

@@ -1,0 +1,153 @@
+
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+<link rel="stylesheet" href="{% static 'core/css/lista_categorias.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+  <div id="carusel1" class="carousel slide" data-bs-ride="carousel">  
+  
+    <div class="carousel-inner ">
+      
+      <div class="carousel-item active">
+        <a href="{% url 'noticia' %}">
+          <div class="news-title-container">
+            <h2 class="news-title"> Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+            </h2>
+          </div>
+          <img src="{% static 'core/img/deporte.png' %}" alt="Deporte" class="d-block" style="width:100%">
+        </a>
+      </div>
+      <div class="carousel-item">
+        <a href="{% url 'noticia' %}">
+          <div class="news-title-container">
+            <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+            </h2>
+          </div>
+          <img src="/img/deporte.png" alt="Deporte" class="d-block" style="width:100%">
+        </a>      </div>
+      <div class="carousel-item">
+        <a href="{% url 'noticia' %}">
+          <div class="news-title-container">
+            <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+            </h2>
+          </div>
+          <img src="/img/deporte.png" alt="Deporte" class="d-block" style="width:100%">
+        </a>      </div>
+    </div>
+    
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carusel1" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carusel1" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+ 
+  <div class="btn-titulo">
+    <button type="button" class="btn btn-primary etiqueta">Deporte</button>
+  </div>
+  <!--FIN DEL CARRUSEL 1-->
+  
+  <!-- INICIO Carousel 2-->
+  
+  <div id="carusel2" class="carousel slide" data-bs-ride="carousel">
+  
+   <!-- Indicators/dots -->
+  
+  
+   <div class="carousel-inner ">
+     <div class="carousel-item active">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/clima.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+     <div class="carousel-item">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/clima.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+     <div class="carousel-item">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/clima.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+   </div>
+   
+   <!-- Left and right controls/icons -->
+   <button class="carousel-control-prev" type="button" data-bs-target="#carusel2" data-bs-slide="prev">
+     <span class="carousel-control-prev-icon"></span>
+   </button>
+   <button class="carousel-control-next" type="button" data-bs-target="#carusel2" data-bs-slide="next">
+     <span class="carousel-control-next-icon"></span>
+   </button>
+  </div>
+  <!--FIN DEL CARRUSEL 2-->
+  <div class="btn-titulo">
+    <button type="button" class="btn btn-primary etiqueta">Clima</button>
+  </div>
+  
+  <!-- INICIO Carousel 3 -->
+  
+  <div id="carusel3" class="carousel slide" data-bs-ride="carousel">
+   
+   <!-- The slideshow/carousel -->
+  
+  
+   <div class="carousel-inner ">
+     <div class="carousel-item active">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/politica.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+     <div class="carousel-item">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/politica.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+     <div class="carousel-item">
+      <a href="{% url 'noticia' %}">
+        <div class="news-title-container">
+          <h2 class="news-title">Giorgio Jackson demanda y exige indemnización a 23 diputados UDI por vincularlo a 'líos de platas': “No todo vale”
+          </h2>
+        </div>
+        <img src="/img/politica.png" alt="Deporte" class="d-block" style="width:100%">
+      </a>    </div>
+   </div>
+   
+   <!-- Left and right controls/icons -->
+   <button class="carousel-control-prev" type="button" data-bs-target="#carusel3" data-bs-slide="prev">
+     <span class="carousel-control-prev-icon"></span>
+   </button>
+   <button class="carousel-control-next" type="button" data-bs-target="#carusel3" data-bs-slide="next">
+     <span class="carousel-control-next-icon"></span>
+   </button>
+  </div>
+  <!--FIN DEL CARRUSEL 3-->
+  <div class="btn-titulo">
+    <button type="button" class="btn btn-primary etiqueta">Política</button>
+  </div>
+  
+
+</main>
+{% endblock %}
