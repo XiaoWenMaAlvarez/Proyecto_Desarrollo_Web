@@ -26,7 +26,7 @@
       <!-- Contenedor de Noticias -->
       <div class="news-container container">
         <!-- Noticia 1-->
-        <!-- Noticia 1-->
+
         <div class="news">
           <a href="{% url 'noticia' %}">
             <img
@@ -44,7 +44,7 @@
             </a>
             <p class="news-description hide">
               por
-              <a href="{% url 'periodista' %}" class="journalist"
+              <a href="#" class="journalist"
                 >Juan Perez</a
               >
             </p>
@@ -52,57 +52,6 @@
           </div>
         </div>
 
-        <!-- Noticia 2-->
-        <div class="news">
-          <a href="{% url 'noticia' %}">
-            <img
-              class="news-banner"
-              src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000000720240401093310/Aton_706135_1.jpg"
-              alt=""
-            />
-          </a>
-          <div class="news-text">
-            <a href="{% url 'noticia' %}">
-              <h2 class="news-title">
-                Imacec de 4,5% en febrero se ubica en la parte alta de
-                expectativas
-              </h2>
-            </a>
-            <p class="news-description hide">
-              por
-              <a href="{% url 'periodista' %}" class="journalist"
-                >Juan Perez</a
-              >
-            </p>
-            <p class="news-description">Martes 26 Marzo, 2024</p>
-          </div>
-        </div>
-
-        <!-- Noticia 3-->
-        <div class="news">
-          <a href="{% url 'noticia' %}">
-            <img
-              class="news-banner"
-              src="https://www.24horas.cl/24horas/site/artic/20240326/imag/foto_0000000520240326160215/WhatsApp_Image_2024-03-27_at_1.08.08_PM.jpeg"
-              alt=""
-            />
-          </a>
-          <div class="news-text">
-            <a href="{% url 'noticia' %}">
-              <h2 class="news-title">
-                13 años de Estadio Seguro: los 10 delitos más sancionados del
-                fútbol chileno
-              </h2>
-            </a>
-            <p class="news-description hide">
-              por
-              <a href="{% url 'periodista' %}" class="journalist"
-                >Juan Perez</a
-              >
-            </p>
-            <p class="news-description">Lunes 25 Marzo, 2024</p>
-          </div>
-        </div>
       </div>
     </main>
     {% endblock %}

@@ -18,24 +18,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Alexis Sánchez marca e Inter de Milán da otro paso al título: la tabla de posiciones de la Serie A de Italia</td>
-          <td>Juan Perez</td>
-          <td class="link"><a href="{% url 'noticia_en_espera' %}">Ingresar</a></td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Vallejo lamenta "utilización política" de la oposición tras disparos en Lo Valledor: "Pan de cada día"</td>
-          <td>Alicia Gonzales</td>
-          <td class="link"><a href="{% url 'noticia_en_espera' %}">Ingresar</a></td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Arrendador de Marcianeke lo amenaza con pistola para que deje vivienda en Colina: hay tres detenidos</td>
-          <td>Roberto Muñoz</td>
-          <td class="link"><a href="{% url 'noticia_en_espera' %}">Ingresar</a></td>
-        </tr>
+        {% for noticia in lista_noticias %}
+          <tr>
+            <th scope="row">{{noticia.id}}</th>
+            <td>{{noticia.titulo}}</td>
+            <td>{{noticia.id_autor.nombre_completo}}</td>
+            <td class="link"><a href="{% url 'noticia_en_espera' noticia.id %}">Ingresar</a></td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </main>

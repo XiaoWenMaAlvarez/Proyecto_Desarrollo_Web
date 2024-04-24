@@ -10,30 +10,24 @@
   <main>
     <!-- Título y descripción de la noticia-->
     <div class="container"> 
-      <h1 class="news-title">Alexis Sánchez marca e Inter de Milán da otro paso al título: la tabla de posiciones de la Serie A de Italia</h1>
+      <h1 class="news-title">{{noticia.titulo}}</h1>
       <div class="news-description">
-        <p class="author">Autor: <a href="/paginas/comun/periodista.html">Juan Perez</a></p>
-        <p class="date">Fecha: 31 de Febrero de 2024</p>
-        <p class="category">Ubicación: Italia</p>
-        <p class="category">Categoría: Deportes</p>
+        <p class="author">Autor: <a href="{% url 'periodista' noticia.id_autor.id %}">{{noticia.id_autor.nombre_completo}}</a></p>
+        <p class="date">Fecha: {{noticia.fecha}}</p>
+        <p class="category">Ubicación: {{noticia.ubicacion}}</p>
+        <p class="category">Categoría: {{noticia.id_categoria.descripcion}}</p>
       </div>
     </div>
 
     <!-- Portada de la noticia -->
     <div class="news-banner container-fluid">
-      <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001320240401175004/2024-04-01T204357Z_1629235435_UP1EK411LL86W.jpg" class="d-block w-100" alt="...">
+      <img src="{{noticia.portada.url}}" class="d-block w-100" alt="...">
     </div>
 
     <!-- Contenido de la noticia -->
     <div class="news-content container">
       <p>
-        Inter de Milán venció 2-0 al Empoli y dio otro paso rumbo al 'Scudetto' en un partido que contó con el protagonismo de Alexis Sánchez, quien pese a su suplencia demostró ser una pieza clave para Simone Inzaghi en el refresco del equipo.
-        
-        Federico Dimarco marcó a los 5' mientras que el chileno, quien ingresó a los 77' por Lautaro Martínez, aprovechó un centro de Denzel Dumfries desde la derecha y, con arco vacío, cerró la cuenta (81'). Este es el segundo tanto del nacional en la Serie A de Italia y el cuarto desde su regreso a Lombardía.
-      
-        El conjunto 'neriazzurri' llegó a los 79 puntos en 30 jornadas y estiró la distancia con Milan, su más cercano perseguidor (65), a falta de ocho fechas para el término de la competición.
-
-        En la próxima fecha, Inter de Milán y Alexis Sánchez visitarán al Udinese.
+        {{noticia.cuerpo}}
       </p>
     </div>
 
@@ -46,17 +40,11 @@
         <div class="carousel-inner">
 
           <!-- Ítem de carrusel -->
-          <div class="carousel-item active">
-            <img src="https://www.latercera.com/resizer/pLvGi5azEzQRevbrj59fpIiaomI=/900x600/smart/cloudfront-us-east-1.images.arcpublishing.com/copesa/S3HXNM743VC2IQU7UFCADCAI24.jpg" class="d-block w-100" alt="...">
-          </div>
-
-          <div class="carousel-item">
-            <img src="https://www.latercera.com/resizer/UPrdtCjtCIMrAq9Qe7aWXUj7THg=/900x600/smart/cloudfront-us-east-1.images.arcpublishing.com/copesa/WFO7CAOFZAJOBBTUERLVCHNWYM.jpg" class="d-block w-100" alt="...">
-          </div>
-
-          <div class="carousel-item">
-            <img src="https://www.hsbnoticias.com/wp-content/uploads/2024/04/Inter-de-Milan-SPORT.jpg" class="d-block w-100" alt="...">
-          </div>
+          {% for imagen in galeria %}
+            <div class="carousel-item active">
+              <img src="{{imagen.imagen.url}}" class="d-block w-100" alt="...">
+            </div>
+          {% endfor %}
 
         </div>
         <!-- Fin de ítem de carrusel-->
@@ -73,15 +61,17 @@
     </div>
     <!-- Fin de galería de fotos -->
 
-    <form action="" class="container">
+    <form action="" class="container" method="POST">
+      <p>{{mensaje}}</p>
+      {% csrf_token %}
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Escriba el motivo de rechazo:</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="mensaje" required></textarea>
       </div>
 
       <div class="buttons-container container">
-        <button type="button" class="btn btn-success">Publicar noticia</button>
-        <button type="button" class="btn btn-danger">Rechazar noticia</button>
+        <a href="{% url 'aceptar_noticia' noticia.id %}" class="btn btn-success">Publicar noticia</a>
+        <input type="submit" class="btn btn-danger" value="Rechazar noticia">
       </div>
 
     </form>    

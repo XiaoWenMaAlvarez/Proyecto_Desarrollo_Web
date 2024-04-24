@@ -10,28 +10,30 @@
   <!-- Contenido principal -->
   <main>
     <h1 class="main-title">Editar cuenta de periodista</h1>
-    <form class="container" action="#">
+    <form class="container" action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" value="{{periodista.nombre_completo}}">
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{periodista.nombre_completo}}" required name="nombre" >
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" value="Periodista del equipo de Investigación en Caos News">
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{perfil_periodista.descripcion}}" required name="descripcion">
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleInputEmail2" value="juan.perez@caosnews.cl">
+        <input type="email" class="form-control" id="exampleInputEmail2" value="{{periodista.correo}}" required name="email">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword3" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="exampleInputPassword3" value="1234">
+        <input type="password" class="form-control" id="exampleInputPassword3" value="{{periodista.contrasenia}}" required name="contrasenia">
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">Foto de perfil</label>
-        <input class="form-control" type="file" id="formFile">
+        <input class="form-control" type="file" id="formFile" required name="foto_perfil">
       </div>
       <button type="submit" class="btn btn-primary">Editar cuenta</button>
+      <p>{{mensaje}}</p>
     </form>
   </main>
 {% endblock %}

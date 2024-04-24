@@ -19,7 +19,7 @@ class Usuario(models.Model):
 
 
 class PerfilPeriodista(models.Model):
-    descripcion = models.EmailField(max_length=100)
+    descripcion = models.CharField(max_length=100)
     foto_perfil = models.ImageField(upload_to='foto_periodista', blank=False, default='avatar-periodista.jpg')
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 

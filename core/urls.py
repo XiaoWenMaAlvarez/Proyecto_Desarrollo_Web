@@ -10,7 +10,7 @@ urlpatterns = [
   path('lista_categorias', lista_categorias, name='lista_categorias'),
   path('lista_periodistas', lista_periodistas, name='lista_periodistas'),
   path('noticia', noticia, name='noticia'),
-  path('periodista', periodista, name='periodista'),
+  path('periodista/<id>/', periodista, name='periodista'),
   path('contacto', contacto, name='contacto'),
 
   # Periodista
@@ -27,5 +27,7 @@ urlpatterns = [
 
   path('lista_noticias_en_espera', lista_noticias_en_espera, name='lista_noticias_en_espera'),
   path('lista_periodistas_admin', lista_periodistas_admin, name='lista_periodistas_admin'),
-  path('noticia_en_espera', noticia_en_espera, name='noticia_en_espera'),
+  path('noticia_en_espera/<id>/', noticia_en_espera, name='noticia_en_espera'),
+
+  path('aceptar_noticia/<id>/', aceptar_noticia, name='aceptar_noticia'),
 ]

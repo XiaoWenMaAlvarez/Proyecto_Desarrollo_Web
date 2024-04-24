@@ -138,23 +138,35 @@ def crear_periodista(request):
 
 def editar_periodista(request, id):
     periodista = Usuario.objects.get(id=id)
+    perfil_periodista = PerfilPeriodista.objects.get(id_usuario=periodista.id)
     aux = {
-        'periodista': periodista
+        'periodista': periodista,
+        'perfil_periodista': perfil_periodista
     }
 
     if request.method == 'POST':
-        nombre = request.POST['nombre_completo']
+        nombre = request.POST['nombre']
+        descripcion = request.POST['descripcion']
         correo = request.POST['email']
         contrasenia = request.POST['contrasenia']
+        foto_perfil = request.FILES['foto_perfil']
 
-        if 3 > 2 :
-            periodista.nombre_completo = nombre
-            periodista.correo = correo
-            periodista.contrasenia = contrasenia
-            periodista.save()
-            aux['mensaje'] = 'Usuario modificado con éxito'
-        else:
-            aux['mensaje'] = 'Ha ocurrido un error'
+        
+
+        if periodista.correo != correo:
+            existe_usuario = Usuario.objects.filter(correo=correo).exists()
+            if existe_usuario:
+                aux['mensaje'] = 'Ya existe un usuario con ese correo'
+                return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+            
+        periodista.nombre_completo = nombre
+        periodista.correo = correo
+        periodista.contrasenia = contrasenia
+        perfil_periodista.descripcion = descripcion
+        perfil_periodista.foto_perfil = foto_perfil
+        periodista.save()
+        perfil_periodista.save()
+        aux['mensaje'] = 'Periodista modificado con éxito'
 
     return render(request, 'core/paginas/admin/editar_periodista.html', aux)
 
@@ -162,21 +174,51 @@ def editar_periodista(request, id):
 def eliminar_periodista(request, id):
     periodista = Usuario.objects.get(id=id)
     periodista.delete()
-    return redirect(to="lista_periodistas_admin")
+    return redirect(to='lista_periodistas_admin')
 
 def lista_noticias_en_espera(request):
-    return render(request, 'core/paginas/admin/lista_noticias_en_espera.html')
+    list_noticias = Noticia.objects.filter(id_estado_noticia=1)
+    aux = {
+        'lista_noticias': list_noticias
+    }
+    return render(request, 'core/paginas/admin/lista_noticias_en_espera.html', aux)
 
 
 def lista_periodistas_admin(request):
-    list_periodistas = Usuario.objects.all()
-    contexto = {
+    list_periodistas = Usuario.objects.filter(id_tipo_usuario=2)
+    aux = {
         'lista_periodistas' : list_periodistas
     }
 
-    return render(request, 'core/paginas/admin/lista_periodistas.html', contexto)
+    return render(request, 'core/paginas/admin/lista_periodistas.html', aux)
 
 
-def noticia_en_espera(request):
-    return render(request, 'core/paginas/admin/noticia_en_espera.html')
+def noticia_en_espera(request, id):
+    aux = {}
+    noticia = Noticia.objects.get(id=id)
+    existe_galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id).exists()
 
+    if existe_galeria:
+        galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id)
+        aux ['galeria'] = galeria
+
+    aux ['noticia'] = noticia
+
+    if request.method == 'POST':
+        noticia.id_estado_noticia = EstadoNoticia.objects.get(id=3)
+        noticia.save()
+        mensaje = request.POST.get('mensaje')
+        MensajeRechazoNoticia.objects.create(mensaje_rechazo=mensaje, id_noticia=noticia)
+        return redirect(to='lista_noticias_en_espera')
+
+    return render(request, 'core/paginas/admin/noticia_en_espera.html', aux)
+
+def aceptar_noticia(request, id):
+    aux = {}
+    noticia = Noticia.objects.get(id=id)
+    noticia.id_estado_noticia = EstadoNoticia.objects.get(id=2)
+    noticia.save()
+
+    aux ['mensaje'] = 'Noticia aceptada con éxito'
+
+    return redirect(to='lista_noticias_en_espera')
