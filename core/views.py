@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import *
 
 
 # Create your views here.
@@ -9,9 +10,25 @@ def index(request):
 def login(request):
     return render(request, 'core/paginas/comun/login.html')
 
-
 def register(request):
-    return render(request, 'core/paginas/comun/registro.html')
+    aux = {}
+
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        correo = request.POST['email']
+        contrasenia = request.POST['contrasenia']
+
+        existe_usuario = Usuario.objects.filter(correo=correo).exists()
+
+        if not(existe_usuario) :
+            Usuario.objects.create(nombre_completo=nombre, correo=correo, contrasenia=contrasenia, 
+                                id_tipo_usuario=TipoUsuario.objects.get(pk=1))
+            aux['mensaje'] = 'Usuario creado con éxito'
+            return render(request, 'core/paginas/comun/login.html', aux)
+        else:
+            aux['mensaje'] = 'Ya existe un usuario con ese correo'
+
+    return render(request, 'core/paginas/comun/registro.html', aux)
 
 
 def lista_categorias(request):
@@ -31,11 +48,56 @@ def periodista(request):
 
 
 def contacto(request):
-    return render(request, 'core/paginas/comun/contacto.html')
+    aux = {}
+
+    if request.method == 'POST':
+        nombre_completo = request.POST['nombre_completo']
+        correo = request.POST['correo']
+        asunto = request.POST['asunto']
+        mensaje = request.POST.get('mensaje')
+
+        Mensaje.objects.create(nombre_completo=nombre_completo, correo=correo, asunto=asunto, mensaje=mensaje)
+            
+        aux['mensaje'] = 'Mensaje enviado con éxito'
+    return render(request, 'core/paginas/comun/contacto.html', aux)
 
 
 def crear_noticia(request):
-    return render(request, 'core/paginas/periodista/crear_noticia.html')
+    lista_categorias = CategoriaNoticia.objects.all()
+    aux = {
+        "categorias": lista_categorias
+    }
+
+    if request.method == 'POST':
+        titulo = request.POST['titulo']
+        ubicacion = request.POST['ubicacion']
+        categoria = request.POST['categoria']
+        cuerpo = request.POST.get('cuerpo')
+        portada = request.FILES.getlist('portada')[0]
+        carrusel = request.FILES.getlist('carrusel')
+
+        existe_noticia = Noticia.objects.filter(titulo=titulo).exists()
+
+        if existe_noticia:
+            aux['mensaje'] = 'Ya existe una noticia con ese título'
+        elif categoria == "0":
+            aux['mensaje'] = 'Debe seleccionar una categoría válida'
+        else:
+            categoria = CategoriaNoticia.objects.get(id=categoria)
+            autor = Usuario.objects.get(id=1)
+            estado_noticia = EstadoNoticia.objects.get(id=1)
+
+            nvaNoticia = Noticia.objects.create(titulo=titulo, ubicacion=ubicacion, portada= portada, cuerpo=cuerpo,
+                                                id_categoria=categoria, id_autor=autor, id_estado_noticia=estado_noticia)
+            
+            for imagen in carrusel:
+                GaleriaImagenes.objects.create(imagen=imagen, id_noticia=nvaNoticia)
+            
+            aux['mensaje'] = 'Noticia creada con éxito'
+
+            
+
+    return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
 
 
 def editar_noticia(request):
@@ -51,19 +113,68 @@ def noticia_rechazada(request):
 
 
 def crear_periodista(request):
-    return render(request, 'core/paginas/admin/crear_periodista.html')
+    aux = {}
+
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        descripcion = request.POST['descripcion']
+        correo = request.POST['email']
+        contrasenia = request.POST['contrasenia']
+        foto_perfil = request.FILES['foto_perfil']
+
+        existe_usuario = Usuario.objects.filter(correo=correo).exists()
+
+        if not(existe_usuario) :
+            nvo_periodista = Usuario.objects.create(nombre_completo=nombre, correo=correo, contrasenia=contrasenia, 
+                                id_tipo_usuario=TipoUsuario.objects.get(pk=2))
+            PerfilPeriodista.objects.create(descripcion=descripcion, id_usuario=nvo_periodista, foto_perfil=foto_perfil)
+            
+            aux['mensaje'] = 'Periodista creado con éxito'
+        else:
+            aux['mensaje'] = 'Ya existe un usuario con ese correo'
+
+    return render(request, 'core/paginas/admin/crear_periodista.html',aux)
 
 
-def editar_periodista(request):
-    return render(request, 'core/paginas/admin/editar_periodista.html')
+def editar_periodista(request, id):
+    periodista = Usuario.objects.get(id=id)
+    aux = {
+        'periodista': periodista
+    }
 
+    if request.method == 'POST':
+        nombre = request.POST['nombre_completo']
+        correo = request.POST['email']
+        contrasenia = request.POST['contrasenia']
+
+        if 3 > 2 :
+            periodista.nombre_completo = nombre
+            periodista.correo = correo
+            periodista.contrasenia = contrasenia
+            periodista.save()
+            aux['mensaje'] = 'Usuario modificado con éxito'
+        else:
+            aux['mensaje'] = 'Ha ocurrido un error'
+
+    return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+
+
+def eliminar_periodista(request, id):
+    periodista = Usuario.objects.get(id=id)
+    periodista.delete()
+    return redirect(to="lista_periodistas_admin")
 
 def lista_noticias_en_espera(request):
     return render(request, 'core/paginas/admin/lista_noticias_en_espera.html')
 
 
 def lista_periodistas_admin(request):
-    return render(request, 'core/paginas/admin/lista_periodistas.html')
+    list_periodistas = Usuario.objects.all()
+    contexto = {
+        'lista_periodistas' : list_periodistas
+    }
+
+    return render(request, 'core/paginas/admin/lista_periodistas.html', contexto)
 
 
 def noticia_en_espera(request):

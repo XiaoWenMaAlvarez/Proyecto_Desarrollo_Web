@@ -21,7 +21,10 @@ urlpatterns = [
 
   # Administrador
   path('crear_periodista', crear_periodista, name='crear_periodista'),
-  path('editar_periodista', editar_periodista, name='editar_periodista'),
+  path('editar_periodista/<id>/', editar_periodista, name='editar_periodista'),
+  path('eliminar_periodista/<id>/', eliminar_periodista, name='eliminar_periodista'),
+
+
   path('lista_noticias_en_espera', lista_noticias_en_espera, name='lista_noticias_en_espera'),
   path('lista_periodistas_admin', lista_periodistas_admin, name='lista_periodistas_admin'),
   path('noticia_en_espera', noticia_en_espera, name='noticia_en_espera'),

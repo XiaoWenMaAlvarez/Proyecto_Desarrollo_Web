@@ -9,45 +9,46 @@
 {% block content %}
   <main class="container">
     <h1 class="main-title">Publicación de noticia.</h1>
-    <form action="#">
+    <form action="#" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="notice-form">
         <label for="notice-title" class="form-label subtitle">Título de la noticia</label>
-        <input type="text" class="form-control" id="notice-title">
+        <input type="text" class="form-control" id="notice-title" required name="titulo">
       </div>
 
       <div class="notice-form">
         <label for="notice-location" class="form-label subtitle">Ubicación de la noticia</label>
-        <input type="text" class="form-control" id="notice-location">
+        <input type="text" class="form-control" id="notice-location" required name="ubicacion">
       </div>
 
       <div class="notice-form">
         <h2 class="subtitle">Seleccione la categoría de la noticia</h2>
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Seleccione la categoría</option>
-          <option value="1">Política</option>
-          <option value="2">Economía</option>
-          <option value="3">Deporte</option>
+        <select class="form-select" aria-label="Default select example" required name="categoria">
+          <option selected value="0">Seleccione la categoría</option>
+          {% for categoria in categorias %}
+            <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+          {% endfor %}
         </select>
       </div>
 
       <div class="notice-form">
         <label for="notice-body" class="form-label">Cuerpo de la noticia</label>
-        <textarea class="form-control" id="notice-body" rows="15"></textarea>
+        <textarea class="form-control" id="notice-body" rows="15" required name="cuerpo"></textarea>
       </div>
       
       <div class="notice-form">
         <label for="formFile" class="form-label">Portada de la noticia (obligatorio)</label>
-        <input class="form-control" type="file" id="formFile">
+        <input class="form-control" type="file" id="formFile" required name="portada">
       </div>
       <div class="notice-form">
         <label for="formFileMultiple" class="form-label">Galería de imágenes de la noticia (opcional)</label>
-        <input class="form-control" type="file" id="formFileMultiple" multiple>
+        <input class="form-control" type="file" id="formFileMultiple" multiple name="carrusel">
       </div>
 
       <div class="buttons-container">
-        <button type="button" class="btn btn-success">Publicar noticia</button>
-        <button type="button" class="btn btn-secondary">Cancelar publicación</button>
+        <input type="submit" class="btn btn-success" value="Publicar noticia">
       </div>
+      <p>{{mensaje}}</p>
     </form>
   </main>
   {% endblock %}

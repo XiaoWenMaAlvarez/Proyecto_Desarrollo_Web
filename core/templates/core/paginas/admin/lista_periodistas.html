@@ -17,21 +17,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">Juan Alberto Perez Gonzales</th>
-          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
-          <td class="link"><a href="#">Eliminar</a></td>
-        </tr>
-        <tr>
-          <th scope="row">Alicia Fernanda Soto Allende</th>
-          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
-          <td class="link"><a href="#">Eliminar</a></td>
-        </tr>
-        <tr>
-          <th scope="row">Fernando Alexander Rojas Concha</th>
-          <td class="link"><a href="{% url 'editar_periodista' %}">Editar</a></td>
-          <td class="link"><a href="#">Eliminar</a></td>
-        </tr>
+        {% for periodista in lista_periodistas %}
+          <tr>
+            <th scope="row">{{periodista.nombre_completo}}</th>
+            <td class="link"><a href="{% url 'editar_periodista' periodista.id %}">Editar</a></td>
+            <td class="link"><a href="{% url 'eliminar_periodista' periodista.id %}">Eliminar</a></td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
 

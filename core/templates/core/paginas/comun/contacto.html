@@ -9,27 +9,28 @@
 {% block content %}
   <main class="container">
     <h1 class="main-title">Formulario de contacto</h1>
-    <form>
+    <form action="" method="POST">
+      {% csrf_token %}
       <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1">
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="nombre_completo" required>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleFormControlInput2" >
+        <input type="email" class="form-control" id="exampleFormControlInput2" name="correo" required>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput3" class="form-label">Asunto</label>
-        <input type="text" class="form-control" id="exampleFormControlInput3">
+        <input type="text" class="form-control" id="exampleFormControlInput3" name="asunto" required>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" name="mensaje" required></textarea>
       </div>
       <div class="buttons-container">
-        <button type="button" class="btn btn-success">Enviar mensaje</button>
-        <button type="button" class="btn btn-secondary">Cancelar envío</button>
+        <input type="submit" class="btn btn-success" value="Enviar mensaje">
       </div>
+      <p>{{mensaje}}</p>
     </form>
   </main>
   {% endblock %}
