@@ -8,6 +8,7 @@
 
 {% block content %}
   <main class="container">
+    <p>{{mensaje}}</p>
     <h1 class="main-title">Publicación de noticia.</h1>
     <form action="#" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -48,7 +49,6 @@
       <div class="buttons-container">
         <input type="submit" class="btn btn-success" value="Publicar noticia">
       </div>
-      <p>{{mensaje}}</p>
     </form>
   </main>
   {% endblock %}

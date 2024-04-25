@@ -39,11 +39,21 @@ def lista_periodistas(request):
     return render(request, 'core/paginas/comun/lista_periodistas.html')
 
 
-def noticia(request):
-    return render(request, 'core/paginas/comun/noticia.html')
+def noticia(request, id):
+    noticia = Noticia.objects.get(id=id)
+    aux = {
+        'noticia': noticia,
+    }
+    existe_galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id).exists()
+
+    if existe_galeria:
+        galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id)
+        aux ['galeria'] = galeria
+
+    return render(request, 'core/paginas/comun/noticia.html', aux)
 
 
-def periodista(request):
+def periodista(request, id):
     return render(request, 'core/paginas/comun/periodista.html')
 
 
@@ -100,16 +110,80 @@ def crear_noticia(request):
     return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
 
 
-def editar_noticia(request):
-    return render(request, 'core/paginas/periodista/editar_noticia.html')
+def editar_noticia(request, id):
+    noticia = Noticia.objects.get(id=id)
+    lista_categorias = CategoriaNoticia.objects.all()
+    aux = {
+        'noticia': noticia,
+        "categorias": lista_categorias
+    }
+
+    if request.method == 'POST':
+        titulo = request.POST['titulo']
+        ubicacion = request.POST['ubicacion']
+        categoria = request.POST['categoria']
+        cuerpo = request.POST.get('cuerpo')
+        portada = request.FILES.getlist('portada')[0]
+        carrusel = request.FILES.getlist('carrusel')
+
+        if noticia.titulo != titulo:
+            existe_noticia = Noticia.objects.filter(titulo=titulo).exists()
+            if existe_noticia:
+                aux['mensaje'] = 'Ya existe una noticia con ese título'
+                return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+        if categoria == "0":
+            aux['mensaje'] = 'Debe seleccionar una categoría válida'
+            return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+            
+        categoria = CategoriaNoticia.objects.get(id=categoria)
+        noticia.titulo = titulo
+        noticia.ubicacion = ubicacion
+        noticia.id_categoria = categoria
+        noticia.portada = portada
+        noticia.cuerpo = cuerpo
+        noticia.id_estado_noticia = EstadoNoticia.objects.get(id=1)
+
+        noticia.save()
+
+        galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id).delete()
+        for imagen in carrusel:
+            GaleriaImagenes.objects.create(imagen=imagen, id_noticia=noticia)
+
+        aux['mensaje'] = 'Noticia modificada con éxito'
+
+    return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
+
+def eliminar_noticia(request,id):
+    noticia = Noticia.objects.get(id=id)
+    noticia.delete()
+    return redirect(to='lista_noticias_publicadas')
 
 
 def lista_noticias_publicadas(request):
-    return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html')
+    # ------------------ QUEMADO --------------------------
+    list_noticias = Noticia.objects.filter(id_autor=1)
+    aux = {
+        'lista_noticias' : list_noticias
+    }
+
+    return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
 
 
-def noticia_rechazada(request):
-    return render(request, 'core/paginas/periodista/noticia_rechazada.html')
+def noticia_rechazada(request, id):
+    aux = {}
+    noticia = Noticia.objects.get(id=id)
+    existe_galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id).exists()
+
+    if existe_galeria:
+        galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id)
+        aux ['galeria'] = galeria
+
+    aux ['noticia'] = noticia
+
+    mensaje_rechazo = MensajeRechazoNoticia.objects.get(id_noticia=noticia.id)
+    aux ['mensaje_rechazo'] = mensaje_rechazo
+
+    return render(request, 'core/paginas/periodista/noticia_rechazada.html', aux)
 
 
 def crear_periodista(request):

@@ -7,46 +7,63 @@
 {% endblock %}
 
 {% block content %}
-  <main>
-    <!-- Título y descripción de la noticia-->
-    <div class="container"> 
-      <h1 class="news-title">Arrendador de Marcianeke lo amenaza con pistola para que deje vivienda en Colina: hay tres detenidos</h1>
-      <div class="news-description">
-        <p class="author">Autor: <a href="{% url 'periodista' %}">Juan Perez</a></p>
-        <p class="date">Fecha: 01 de Abril de 2024</p>
-        <p class="category">Ubicación: Región Metropolitana</p>
-        <p class="category">Categoría: Famosos</p>
+<main>
+  <!-- Título y descripción de la noticia-->
+  <div class="container"> 
+    <h1 class="news-title">{{noticia.titulo}}</h1>
+    <div class="news-description">
+      <p class="author">Autor: <a href="{% url 'periodista' noticia.id_autor.id %}">{{noticia.id_autor.nombre_completo}}</a></p>
+      <p class="date">Fecha: {{noticia.fecha}}</p>
+      <p class="category">Ubicación: {{noticia.ubicacion}}</p>
+      <p class="category">Categoría: {{noticia.id_categoria.descripcion}}</p>
+    </div>
+  </div>
+
+  <!-- Portada de la noticia -->
+  <div class="news-banner container-fluid">
+    <img src="{{noticia.portada.url}}" class="d-block w-100" alt="...">
+  </div>
+
+  <!-- Contenido de la noticia -->
+  <div class="news-content container">
+    <p>
+      {{noticia.cuerpo}}
+    </p>
+  </div>
+
+  <!-- Galería de fotos -->
+  <div class="container-lg">
+    <h2 class="photo-gallery-title">Galería de fotos</h2>
+  </div>
+  <div class="photo-gallery container-lg">
+    <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+
+        <!-- Ítem de carrusel -->
+        {% for imagen in galeria %}
+          <div class="carousel-item active">
+            <img src="{{imagen.imagen.url}}" class="d-block w-100" alt="...">
+          </div>
+        {% endfor %}
+
       </div>
+      <!-- Fin de ítem de carrusel-->
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
+  </div>
+  <!-- Fin de galería de fotos -->
 
-    <!-- Portada de la noticia -->
-    <div class="news-banner container-fluid">
-      <img src="https://www.24horas.cl/24horas/site/artic/20240401/imag/foto_0000001520240401122455/marcianeke-amenazas-detenidos-colina.jpg" class="d-block w-100" alt="...">
+    <div class="mb-3 container">
+      <label for="exampleFormControlTextarea1" class="form-label">Motivo de rechazo:</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" disabled>{{mensaje_rechazo.mensaje_rechazo}}</textarea>
     </div>
-
-    <!-- Contenido de la noticia -->
-    <div class="news-content container">
-      <p>
-        Tres sujetos resultaron detenidos luego de que ingresaran al domicilio donde vive el cantante urbano Marcianeke y lo amenazaran con una pistola a balines. Aparentemente, uno de los detenidos sería el propietario del lugar.
-        
-        Durante la mañana de este lunes, funcionarios de la 8.ª Comisaría de Colina, detuvieron a tres sujetos por amenazas y violación de morada. Delitos de los cuales fue víctima el cantante urbano Matías Muñoz, más conocido como Marcianeke.
-
-        Según información preliminar, el personal uniformado concurrió hasta la Hacienda Chacabuco a verificar una situación de problemas por arriendo y amenazas, específicamente, donde vive el cantante.
-
-        Allí, aparentemente, habrían ingresado tres sujetos con una pistola a balines, entre ellos, el propietario del domicilio. Estos habrían amenazado a Marcianeke para que abandonara el domicilio.
-
-        Aparentemente, la víctima y victimario mantendrían un contrato de arriendo al día.
-
-        Los detenidos se tratarían de un chileno y dos venezolanos, y ninguno cuenta con antecedentes penales.
-      </p>
-    </div>
-
-    <!-- Fin de galería de fotos -->
-    <form action="" class="container">
-      <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Motivo de rechazo:</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" disabled>Mala redacción.</textarea>
-      </div>
-    </form>    
-  </main>
+</main>
 {% endblock %}
