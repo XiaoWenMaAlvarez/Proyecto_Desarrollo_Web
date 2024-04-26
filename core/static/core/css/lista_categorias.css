@@ -54,3 +54,24 @@ body {
         padding-bottom: 1rem;
     }
 }
+
+.carousel-item {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+  } 
+  
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .carousel-item img::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+  } 
+  

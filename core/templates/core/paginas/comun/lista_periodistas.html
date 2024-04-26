@@ -13,15 +13,16 @@
   <div class="card-container container">
 
     <!-- Periodista 1-->
+    {% for perfil_periodista in lista_perfil_periodistas %}
     <div class="card" >
-      <img class="image-card" src="/img/periodista1.jpg" alt="">
+      <img class="image-card" src="{{perfil_periodista.foto_perfil.url}}" alt="">
       <div class="card-body">
-        <h5 class="card-title">Javiera alvarez</h5>
-        <p class="card-text">Periodista de Prensa Caos News. Especializado en periodismo deportivo</p>
-        <a href="#" class="btn btn-primary">Ver noticias</a>
+        <h5 class="card-title">{{perfil_periodista.id_usuario.nombre_completo}}</h5>
+        <p class="card-text">{{perfil_periodista.descripcion}}</p>
+        <a href="{% url 'periodista' perfil_periodista.id_usuario.id %}" class="btn btn-primary">Ver noticias</a>
       </div>
     </div>
-
+    {% endfor %}
     
   </div>
 </main>

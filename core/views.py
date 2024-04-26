@@ -4,7 +4,22 @@ from .models import *
 
 # Create your views here.
 def index(request):
-    return render(request, 'core/index.html')
+    ultimas_noticias = Noticia.objects.all().order_by('fecha')[:5]
+    aux = {
+        'lista_noticias': ultimas_noticias
+    }
+
+    if request.method == 'POST':
+        busqueda = request.POST['busqueda']
+        noticias_encontradas = Noticia.objects.filter(titulo__icontains=busqueda).filter(id_estado_noticia=2)
+        aux = {
+            'noticias_encontradas': noticias_encontradas
+        }
+        
+        if len(noticias_encontradas) == 0:
+            aux['mensaje'] = 'No se encontraron resultados'
+
+    return render(request, 'core/index.html', aux)
 
 
 def login(request):
@@ -32,11 +47,25 @@ def register(request):
 
 
 def lista_categorias(request):
-    return render(request, 'core/paginas/comun/lista_categorias.html')
+    lista_categorias = CategoriaNoticia.objects.all()
+
+    noticias = {}
+    for categoria in lista_categorias:
+        noticias[categoria.descripcion] = Noticia.objects.filter(id_categoria=categoria.id)
+
+    aux = {
+        "categorias": noticias.items()
+    }
+
+    return render(request, 'core/paginas/comun/lista_categorias.html', aux)
 
 
 def lista_periodistas(request):
-    return render(request, 'core/paginas/comun/lista_periodistas.html')
+    lista_perfil_periodistas = PerfilPeriodista.objects.all()
+    aux = {
+        'lista_perfil_periodistas': lista_perfil_periodistas
+    }
+    return render(request, 'core/paginas/comun/lista_periodistas.html', aux)
 
 
 def noticia(request, id):
@@ -54,7 +83,17 @@ def noticia(request, id):
 
 
 def periodista(request, id):
-    return render(request, 'core/paginas/comun/periodista.html')
+    perfil_periodista = PerfilPeriodista.objects.get(id_usuario=id)
+    cantidad_noticias = Noticia.objects.filter(id_autor=id).count()
+    lista_noticias = Noticia.objects.filter(id_autor=id)
+
+    aux = {
+        'perfil_periodista': perfil_periodista,
+        'cantidad_noticias': cantidad_noticias,
+        'lista_noticias': lista_noticias
+    }
+    
+    return render(request, 'core/paginas/comun/periodista.html', aux)
 
 
 def contacto(request):
