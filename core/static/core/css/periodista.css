@@ -89,10 +89,6 @@ a {
 }
 
 @media screen and (min-width: 1024px) {
-  .news-container{
-    align-items: center;
-  }
-
   .news {
     max-width: 60vw;
   }

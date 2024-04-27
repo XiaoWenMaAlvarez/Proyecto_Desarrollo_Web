@@ -75,9 +75,8 @@ main {
     margin-bottom: 2rem;
   }
 
-  .photo-gallery{
-    display: flex;
-    justify-content: center;
+  .carousel.slide{
+    margin-inline: auto;
   }
 
   .photo-gallery .carousel {
