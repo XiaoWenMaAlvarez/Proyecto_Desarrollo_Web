@@ -11,7 +11,17 @@ def index(request):
 
     if request.method == 'POST':
         busqueda = request.POST['busqueda']
-        noticias_encontradas = Noticia.objects.filter(titulo__icontains=busqueda).filter(id_estado_noticia=2)
+        # noticias_encontradas = Noticia.objects.filter(titulo__icontains=busqueda).filter(id_estado_noticia=2)
+        noticias_encontradas = Noticia.objects.raw("""
+                                                SELECT * 
+                                                FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN core_usuario u ON u.id = n.id_autor_id 
+                                                WHERE ( 
+                                                INSTR(n.titulo, %s) != 0  OR  INSTR(u.nombre_completo, %s) != 0 OR  INSTR(c.descripcion, %s) != 0
+                                                ) 
+                                                AND n.id_estado_noticia_id = 2
+                                                """
+                                                , [busqueda, busqueda, busqueda])
+    
         aux = {
             'noticias_encontradas': noticias_encontradas
         }
@@ -23,6 +33,24 @@ def index(request):
 
 
 def login(request):
+    aux = {}
+
+    if request.method == 'POST':
+        correo = request.POST['email']
+        contrasenia = request.POST['contrasenia']
+
+        existe_usuario = Usuario.objects.filter(correo=correo).exists()
+        if not(existe_usuario):
+            aux['mensaje'] = 'Credenciales inválidas'
+            return render(request, 'core/paginas/comun/login.html', aux)
+        
+        usuario_encontrado = Usuario.objects.get(correo=correo)
+        if usuario_encontrado.contrasenia == contrasenia:
+            return redirect(to='index')
+        else:
+            aux['mensaje'] = 'Credenciales inválidas'
+            return render(request, 'core/paginas/comun/login.html', aux)
+
     return render(request, 'core/paginas/comun/login.html')
 
 def register(request):
@@ -133,7 +161,10 @@ def crear_noticia(request):
             aux['mensaje'] = 'Debe seleccionar una categoría válida'
         else:
             categoria = CategoriaNoticia.objects.get(id=categoria)
+
+            # QUEMADO
             autor = Usuario.objects.get(id=1)
+            # QUEMADO
             estado_noticia = EstadoNoticia.objects.get(id=1)
 
             nvaNoticia = Noticia.objects.create(titulo=titulo, ubicacion=ubicacion, portada= portada, cuerpo=cuerpo,
@@ -335,3 +366,18 @@ def aceptar_noticia(request, id):
     aux ['mensaje'] = 'Noticia aceptada con éxito'
 
     return redirect(to='lista_noticias_en_espera')
+
+def lista_mensajes(request):
+    lista_mensajes = Mensaje.objects.all()
+    aux = {
+        'lista_mensajes' : lista_mensajes
+    }
+
+    return render(request, 'core/paginas/admin/lista_mensajes.html', aux)
+
+def mensaje(request, id):
+    mensaje = Mensaje.objects.get(id=id)
+    aux = {
+        "mensaje": mensaje
+    }
+    return render(request, 'core/paginas/admin/mensaje.html', aux)

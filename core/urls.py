@@ -31,4 +31,7 @@ urlpatterns = [
   path('noticia_en_espera/<id>/', noticia_en_espera, name='noticia_en_espera'),
 
   path('aceptar_noticia/<id>/', aceptar_noticia, name='aceptar_noticia'),
+
+  path('lista_mensajes', lista_mensajes, name='lista_mensajes'),
+  path('mensaje/<id>/', mensaje, name='mensaje'),
 ]

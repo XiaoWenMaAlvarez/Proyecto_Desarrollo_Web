@@ -1,0 +1,32 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/lista_noticias_en_espera.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main>
+    <table class="table container">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Asunto</th>
+          <th scope="col">Autor</th>
+          <th scope="col">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for mensaje in lista_mensajes %}
+          <tr>
+            <th scope="row">{{mensaje.id}}</th>
+            <td>{{mensaje.asunto}}</td>
+            <td>{{mensaje.correo}}</td>
+            <td class="link"><a href="{% url 'mensaje' mensaje.id %}">Ingresar</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+  {% endblock %}
