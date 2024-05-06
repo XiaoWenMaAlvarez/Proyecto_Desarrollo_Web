@@ -5,7 +5,6 @@ from .views import *
 # Sin slash
 urlpatterns = [
   path('', index, name='index'),
-  path('login', login, name='login'),
   path('register', register, name='register'),
   path('lista_categorias', lista_categorias, name='lista_categorias'),
   path('lista_periodistas', lista_periodistas, name='lista_periodistas'),

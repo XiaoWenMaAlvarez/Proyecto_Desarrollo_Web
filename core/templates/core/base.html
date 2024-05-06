@@ -25,7 +25,18 @@
   <header class="main-header">
     <div class="main-header_content">
       <a href="{% url 'index' %}"><img src="{% static 'core/img/logo-light.svg' %}" class="logo" alt="Logo Caos News"></a>
-      <a href="{% url 'login' %}" class="login-button"><button class="button">Inicia sesión</button></a>  
+
+      {% if user.is_authenticated %}
+      <form action="{% url 'logout' %}" class="login-button" method="POST">
+        {% csrf_token %}
+      <button class="button">Cerrar sesión</button>
+      </form>
+      
+      {% else %}
+        <a href="{% url 'login' %}" class="login-button"><button class="button">Inicia sesión</button></a>  
+      {% endif %}
+
+
       <a href="#main-menu" class="icon menu-icon"><img src="{% static 'core/icons/menu-icon.svg' %}" alt="Ícono de hamburguesa"></a>
       <nav id="main-menu" class="main-menu">
         <ul>
@@ -34,9 +45,11 @@
           <li><a href="{% url 'lista_categorias' %}">Categorías</a></li>
           <li><a href="{% url 'lista_periodistas' %}">Periodistas</a></li>
           <li><a href="{% url 'contacto' %}">Contacto</a></li>
+
           <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
           <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>
           <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
+          
           <li><a href="{% url 'lista_periodistas_admin' %}">Administrar cuentas de periodistas</a></li>
           <li><a href="{% url 'lista_mensajes' %}">Ver mensajes</a></li>
         </ul>
