@@ -4,6 +4,8 @@ from core.forms import CustomUserCreationForm
 from django.contrib.auth.models import Group, User
 from .models import *
 
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 # Create your views here.
 
@@ -117,6 +119,8 @@ def contacto(request):
     return render(request, 'core/paginas/comun/contacto.html', aux)
 
 
+@login_required
+@permission_required('core.add_noticia')
 def crear_noticia(request):
     lista_categorias = CategoriaNoticia.objects.all()
     aux = {
@@ -141,7 +145,7 @@ def crear_noticia(request):
             categoria = CategoriaNoticia.objects.get(id=categoria)
 
             # QUEMADO
-            autor = User.objects.get(id=2)
+            autor = User.objects.get(id=8)
             # QUEMADO
             estado_noticia = EstadoNoticia.objects.get(id=1)
 
@@ -157,7 +161,8 @@ def crear_noticia(request):
 
     return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
 
-
+@login_required
+@permission_required('core.change_noticia')
 def editar_noticia(request, id):
     noticia = Noticia.objects.get(id=id)
     lista_categorias = CategoriaNoticia.objects.all()
@@ -201,22 +206,27 @@ def editar_noticia(request, id):
 
     return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
 
+@login_required
+@permission_required('core.delete_noticia')
 def eliminar_noticia(request,id):
     noticia = Noticia.objects.get(id=id)
     noticia.delete()
     return redirect(to='lista_noticias_publicadas')
 
 
+@login_required
+@permission_required('core.change_noticia')
 def lista_noticias_publicadas(request):
     # ------------------ QUEMADO --------------------------
-    list_noticias = Noticia.objects.filter(id_autor=2)
+    list_noticias = Noticia.objects.filter(id_autor=8)
     aux = {
         'lista_noticias' : list_noticias
     }
 
     return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
 
-
+@login_required
+@permission_required('core.change_noticia')
 def noticia_rechazada(request, id):
     aux = {}
     noticia = Noticia.objects.get(id=id)
@@ -234,6 +244,10 @@ def noticia_rechazada(request, id):
     return render(request, 'core/paginas/periodista/noticia_rechazada.html', aux)
 
 
+from django.contrib.auth.hashers import make_password
+
+@login_required
+@permission_required('auth.change_user')
 def crear_periodista(request):
     aux = {}
 
@@ -243,7 +257,7 @@ def crear_periodista(request):
         apellido = request.POST['apellido']
         descripcion = request.POST['descripcion']
         correo = request.POST['email']
-        contrasenia = request.POST['contrasenia']
+        contrasenia = make_password(request.POST['contrasenia'])
         foto_perfil = request.FILES['foto_perfil']
 
         existe_usuario = User.objects.filter(email=correo).exists()
@@ -262,6 +276,8 @@ def crear_periodista(request):
     return render(request, 'core/paginas/admin/crear_periodista.html',aux)
 
 
+@login_required
+@permission_required('auth.change_user')
 def editar_periodista(request, id):
     periodista = User.objects.get(id=id)
     perfil_periodista = PerfilPeriodista.objects.get(id_usuario=periodista.id)
@@ -271,23 +287,27 @@ def editar_periodista(request, id):
     }
 
     if request.method == 'POST':
+        username = request.POST['username']
         nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
         descripcion = request.POST['descripcion']
         correo = request.POST['email']
-        contrasenia = request.POST['contrasenia']
+        contrasenia = make_password(request.POST['contrasenia'])
         foto_perfil = request.FILES['foto_perfil']
 
         
 
-        if periodista.correo != correo:
+        if periodista.email != correo:
             existe_usuario = User.objects.filter(email=correo).exists()
             if existe_usuario:
                 aux['mensaje'] = 'Ya existe un usuario con ese correo'
                 return render(request, 'core/paginas/admin/editar_periodista.html', aux)
             
-        periodista.nombre_completo = nombre
-        periodista.correo = correo
-        periodista.contrasenia = contrasenia
+        periodista.username = username
+        periodista.first_name = nombre
+        periodista.last_name = apellido
+        periodista.email = correo
+        periodista.password = contrasenia
         perfil_periodista.descripcion = descripcion
         perfil_periodista.foto_perfil = foto_perfil
         periodista.save()
@@ -296,7 +316,8 @@ def editar_periodista(request, id):
 
     return render(request, 'core/paginas/admin/editar_periodista.html', aux)
 
-
+@login_required
+@permission_required('auth.delete_user')
 def eliminar_periodista(request, id):
     periodista = User.objects.get(id=id)
     periodista.delete()
@@ -309,7 +330,8 @@ def lista_noticias_en_espera(request):
     }
     return render(request, 'core/paginas/admin/lista_noticias_en_espera.html', aux)
 
-
+@login_required
+@permission_required('auth.change_user')
 def lista_periodistas_admin(request):
     list_periodistas = User.objects.raw("""
         SELECT * 
@@ -324,7 +346,8 @@ def lista_periodistas_admin(request):
 
     return render(request, 'core/paginas/admin/lista_periodistas.html', aux)
 
-
+@login_required
+@permission_required('auth.change_user')
 def noticia_en_espera(request, id):
     aux = {}
     noticia = Noticia.objects.get(id=id)
@@ -345,6 +368,8 @@ def noticia_en_espera(request, id):
 
     return render(request, 'core/paginas/admin/noticia_en_espera.html', aux)
 
+@login_required
+@permission_required('auth.change_user')
 def aceptar_noticia(request, id):
     aux = {}
     noticia = Noticia.objects.get(id=id)
@@ -355,6 +380,8 @@ def aceptar_noticia(request, id):
 
     return redirect(to='lista_noticias_en_espera')
 
+@login_required
+@permission_required('auth.change_user')
 def lista_mensajes(request):
     lista_mensajes = Mensaje.objects.all()
     aux = {
@@ -363,6 +390,8 @@ def lista_mensajes(request):
 
     return render(request, 'core/paginas/admin/lista_mensajes.html', aux)
 
+@login_required
+@permission_required('auth.change_user')
 def mensaje(request, id):
     mensaje = Mensaje.objects.get(id=id)
     aux = {

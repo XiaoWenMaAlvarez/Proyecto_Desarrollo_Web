@@ -10,7 +10,7 @@
 {% block content %}
     <main>
       <div class="container">
-        <h1 class="journalist-name">{{perfil_periodista.id_usuario.nombre_completo}}</h1>
+        <h1 class="journalist-name">{{perfil_periodista.id_usuario.first_name}} {{perfil_periodista.id_usuario.last_name}}</h1>
       </div>
       <div class="journalist-card container">
         <img src="{{perfil_periodista.foto_perfil.url}}" class="journalist-photo" alt="" />
@@ -38,7 +38,7 @@
             </a>
             <p class="news-description hide">
               por
-              <a href="{% url 'periodista' perfil_periodista.id_usuario.id %}" class="journalist">{{noticia.id_autor.nombre_completo}}</a>
+              <a href="{% url 'periodista' perfil_periodista.id_usuario.id %}" class="journalist">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a>
             </p>
             <p class="news-description">{{noticia.fecha}}</p>
           </div>

@@ -9,7 +9,7 @@
 {% block content %}
   <!-- Contenido principal -->
   <main>
-    <p>{{mensaje}}</p>
+    <p style="text-align: center;">{{mensaje}}</p>
     <h1 class="main-title">Editar cuenta de periodista</h1>
     <form class="container" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -35,7 +35,7 @@
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword3" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="exampleInputPassword3" value="{{periodista.password}}" required name="contrasenia">
+        <input type="password" class="form-control" id="exampleInputPassword3" value="" required name="contrasenia">
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">Foto de perfil</label>

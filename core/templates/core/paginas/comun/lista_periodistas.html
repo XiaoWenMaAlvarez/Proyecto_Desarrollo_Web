@@ -17,7 +17,7 @@
     <div class="card" >
       <img class="image-card" src="{{perfil_periodista.foto_perfil.url}}" alt="">
       <div class="card-body">
-        <h5 class="card-title">{{perfil_periodista.id_usuario.nombre_completo}}</h5>
+        <h5 class="card-title">{{perfil_periodista.id_usuario.first_name}} {{perfil_periodista.id_usuario.last_name}}</h5>
         <p class="card-text">{{perfil_periodista.descripcion}}</p>
         <a href="{% url 'periodista' perfil_periodista.id_usuario.id %}" class="btn btn-primary">Ver noticias</a>
       </div>

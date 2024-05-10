@@ -22,7 +22,7 @@
           <tr>
             <th scope="row">{{noticia.id}}</th>
             <td>{{noticia.titulo}}</td>
-            <td>{{noticia.id_autor.nombre_completo}}</td>
+            <td>{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</td>
             <td class="link"><a href="{% url 'noticia_en_espera' noticia.id %}">Ingresar</a></td>
           </tr>
         {% endfor %}

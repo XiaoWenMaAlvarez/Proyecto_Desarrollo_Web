@@ -27,7 +27,7 @@
       <a href="{% url 'index' %}"><img src="{% static 'core/img/logo-light.svg' %}" class="logo" alt="Logo Caos News"></a>
 
       {% if user.is_authenticated %}
-      <form action="{% url 'logout' %}" class="login-button" method="POST">
+      <form action="{% url 'logout' %}" class="login-button" method="POST" style="padding-top: 0;">
         {% csrf_token %}
       <button class="button">Cerrar sesión</button>
       </form>
@@ -50,12 +50,12 @@
             {% if group.name == 'Periodista' %}
               <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
               <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>
-              <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
             {% endif %}
           {% endfor %}
 
           {% for group in user.groups.all %}
             {% if group.name == 'Administrador' %}
+              <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
               <li><a href="{% url 'lista_periodistas_admin' %}">Administrar cuentas de periodistas</a></li>
               <li><a href="{% url 'lista_mensajes' %}">Ver mensajes</a></li>
             {% endif %}

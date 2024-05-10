@@ -78,7 +78,7 @@
             <a href="{% url 'noticia' noticia.id %}">
               <h2 class="news-title">{{noticia.titulo}}</h2>
             </a>
-            <p class="news-description hide">por <a href="{% url 'periodista' noticia.id_autor.id %}" class="journalist">{{noticia.id_autor.nombre_completo}}</a></p>
+            <p class="news-description hide">por <a href="{% url 'periodista' noticia.id_autor.id %}" class="journalist">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a></p>
             <p class="news-description">{{noticia.fecha}}</p>
           </div>
         </div>
