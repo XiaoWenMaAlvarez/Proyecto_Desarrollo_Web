@@ -22,7 +22,8 @@
           <tr>
             <th scope="row">{{periodista.nombre_completo}}</th>
             <td class="link"><a href="{% url 'editar_periodista' periodista.id %}">Editar</a></td>
-            <td class="link"><a href="{% url 'eliminar_periodista' periodista.id %}">Eliminar</a></td>
+            <td class="link"><a onclick="confirmarEliminar({{periodista.id}})">Eliminar</a></td>
+            
           </tr>
         {% endfor %}
       </tbody>

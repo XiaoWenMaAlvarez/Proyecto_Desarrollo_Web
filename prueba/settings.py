@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PIL',
-    'core'
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,5 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

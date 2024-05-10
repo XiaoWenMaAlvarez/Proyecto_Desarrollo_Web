@@ -19,16 +19,14 @@
   <!-- Contenido principal -->
   <main class="container">
     <div class="image-container">
-      <img src="{% static 'core/img/logo-light.svg' %}" class="logo" alt="">
+      <img src="{% static 'core/img/logo-dark.svg' %}" class="logo" alt="">
     </div>
     <h1 class="main-title">Inicia sesión</h1>
     <p>{{mensaje}}</p>
+    {% load crispy_forms_tags %}
     <form action="" method="POST" style=" display: flex; flex-direction: column; align-items: center; gap: 2rem; ">
       {% csrf_token %}
-      <div style="color: black;">
-        {{ form }}
-      </div>
-      
+      {{ form|crispy }}
       <input type="submit" class="btn btn-primary" value="Iniciar sesión">
       <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate gratis</a></p>
     </form>
