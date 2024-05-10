@@ -8,12 +8,21 @@
 
 {% block content %}
   <main>
+    <p>{{mensaje}}</p>
     <h1 class="main-title">Creación de cuenta de periodista</h1>
     <form class="container" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Nombre completo</label>
+        <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="username" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="exampleInputEmail1" name="nombre" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apellido" required>
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Descripción</label>
@@ -31,8 +40,7 @@
         <label for="formFile" class="form-label">Foto de perfil</label>
         <input class="form-control" type="file" id="formFile" name="foto_perfil" required>
       </div>
-      <button type="submit" class="btn btn-primary">Crear cuenta</button>
-      <p>{{mensaje}}</p>
+      <button type="submit" class="btn btn-primary" style="margin-bottom: 2rem;">Crear cuenta</button>
     </form>
     
   </main>

@@ -9,12 +9,21 @@
 {% block content %}
   <!-- Contenido principal -->
   <main>
+    <p>{{mensaje}}</p>
     <h1 class="main-title">Editar cuenta de periodista</h1>
     <form class="container" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" value="{{periodista.nombre_completo}}" required name="nombre" >
+        <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="username"  value="{{periodista.username}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="nombre"  value="{{periodista.first_name}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apellido"  value="{{periodista.last_name}}" required>
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Descripción</label>
@@ -22,18 +31,17 @@
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleInputEmail2" value="{{periodista.correo}}" required name="email">
+        <input type="email" class="form-control" id="exampleInputEmail2" value="{{periodista.email}}" required name="email">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword3" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="exampleInputPassword3" value="{{periodista.contrasenia}}" required name="contrasenia">
+        <input type="password" class="form-control" id="exampleInputPassword3" value="{{periodista.password}}" required name="contrasenia">
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">Foto de perfil</label>
         <input class="form-control" type="file" id="formFile" required name="foto_perfil">
       </div>
-      <button type="submit" class="btn btn-primary">Editar cuenta</button>
-      <p>{{mensaje}}</p>
+      <button type="submit" class="btn btn-primary" style="margin-bottom: 2rem;">Editar cuenta</button>
     </form>
   </main>
 {% endblock %}

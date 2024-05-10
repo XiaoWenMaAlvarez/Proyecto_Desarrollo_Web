@@ -46,12 +46,21 @@
           <li><a href="{% url 'lista_periodistas' %}">Periodistas</a></li>
           <li><a href="{% url 'contacto' %}">Contacto</a></li>
 
-          <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
-          <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>
-          <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
-          
-          <li><a href="{% url 'lista_periodistas_admin' %}">Administrar cuentas de periodistas</a></li>
-          <li><a href="{% url 'lista_mensajes' %}">Ver mensajes</a></li>
+          {% for group in user.groups.all %}
+            {% if group.name == 'Periodista' %}
+              <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
+              <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>
+              <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% for group in user.groups.all %}
+            {% if group.name == 'Administrador' %}
+              <li><a href="{% url 'lista_periodistas_admin' %}">Administrar cuentas de periodistas</a></li>
+              <li><a href="{% url 'lista_mensajes' %}">Ver mensajes</a></li>
+            {% endif %}
+          {% endfor %}
+
         </ul>
       </nav>
     </div>

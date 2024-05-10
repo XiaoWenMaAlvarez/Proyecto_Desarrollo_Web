@@ -20,7 +20,7 @@
       <tbody>
         {% for periodista in lista_periodistas %}
           <tr>
-            <th scope="row">{{periodista.nombre_completo}}</th>
+            <th scope="row">{{periodista.first_name}} {{periodista.last_name}}</th>
             <td class="link"><a href="{% url 'editar_periodista' periodista.id %}">Editar</a></td>
             <td class="link"><a onclick="confirmarEliminar({{periodista.id}})">Eliminar</a></td>
             

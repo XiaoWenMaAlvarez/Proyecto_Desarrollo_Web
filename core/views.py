@@ -1,8 +1,28 @@
 from django.shortcuts import render, redirect
+
+from core.forms import CustomUserCreationForm
+from django.contrib.auth.models import Group, User
 from .models import *
 
 
 # Create your views here.
+
+def register(request):
+    aux = {
+        'form': CustomUserCreationForm()
+    }
+    if request.method == 'POST':
+        formulario = CustomUserCreationForm(data=request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+        aux['mensaje'] = "Registro exitoso"
+        group = Group.objects.get(name='Lector')
+        user.groups.add(group)
+
+
+    return render(request,"registration/register.html", aux)
+
+
 def index(request):
     ultimas_noticias = Noticia.objects.all().order_by('fecha')[:5]
     aux = {
@@ -13,14 +33,14 @@ def index(request):
         busqueda = request.POST['busqueda']
         # noticias_encontradas = Noticia.objects.filter(titulo__icontains=busqueda).filter(id_estado_noticia=2)
         noticias_encontradas = Noticia.objects.raw("""
-                                                SELECT * 
-                                                FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN core_usuario u ON u.id = n.id_autor_id 
-                                                WHERE ( 
-                                                INSTR(n.titulo, %s) != 0  OR  INSTR(u.nombre_completo, %s) != 0 OR  INSTR(c.descripcion, %s) != 0
-                                                ) 
-                                                AND n.id_estado_noticia_id = 2
-                                                """
-                                                , [busqueda, busqueda, busqueda])
+        SELECT * 
+        FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
+        WHERE ( 
+        INSTR(n.titulo, %s) != 0  OR  INSTR(u.first_name || ' ' || u.last_name, %s) != 0 OR  INSTR(c.descripcion, %s) != 0
+        ) 
+        AND n.id_estado_noticia_id = 2
+        """
+        , [busqueda, busqueda, busqueda])
     
         aux = {
             'noticias_encontradas': noticias_encontradas
@@ -30,48 +50,6 @@ def index(request):
             aux['mensaje'] = 'No se encontraron resultados'
 
     return render(request, 'core/index.html', aux)
-
-
-def login(request):
-    aux = {}
-
-    if request.method == 'POST':
-        correo = request.POST['email']
-        contrasenia = request.POST['contrasenia']
-
-        existe_usuario = Usuario.objects.filter(correo=correo).exists()
-        if not(existe_usuario):
-            aux['mensaje'] = 'Credenciales inválidas'
-            return render(request, 'core/paginas/comun/login.html', aux)
-        
-        usuario_encontrado = Usuario.objects.get(correo=correo)
-        if usuario_encontrado.contrasenia == contrasenia:
-            return redirect(to='index')
-        else:
-            aux['mensaje'] = 'Credenciales inválidas'
-            return render(request, 'core/paginas/comun/login.html', aux)
-
-    return render(request, 'core/paginas/comun/login.html')
-
-def register(request):
-    aux = {}
-
-    if request.method == 'POST':
-        nombre = request.POST['nombre']
-        correo = request.POST['email']
-        contrasenia = request.POST['contrasenia']
-
-        existe_usuario = Usuario.objects.filter(correo=correo).exists()
-
-        if not(existe_usuario) :
-            Usuario.objects.create(nombre_completo=nombre, correo=correo, contrasenia=contrasenia, 
-                                id_tipo_usuario=TipoUsuario.objects.get(pk=1))
-            aux['mensaje'] = 'Usuario creado con éxito'
-            return render(request, 'core/paginas/comun/login.html', aux)
-        else:
-            aux['mensaje'] = 'Ya existe un usuario con ese correo'
-
-    return render(request, 'core/paginas/comun/registro.html', aux)
 
 
 def lista_categorias(request):
@@ -163,7 +141,7 @@ def crear_noticia(request):
             categoria = CategoriaNoticia.objects.get(id=categoria)
 
             # QUEMADO
-            autor = Usuario.objects.get(id=1)
+            autor = User.objects.get(id=2)
             # QUEMADO
             estado_noticia = EstadoNoticia.objects.get(id=1)
 
@@ -231,7 +209,7 @@ def eliminar_noticia(request,id):
 
 def lista_noticias_publicadas(request):
     # ------------------ QUEMADO --------------------------
-    list_noticias = Noticia.objects.filter(id_autor=1)
+    list_noticias = Noticia.objects.filter(id_autor=2)
     aux = {
         'lista_noticias' : list_noticias
     }
@@ -260,17 +238,21 @@ def crear_periodista(request):
     aux = {}
 
     if request.method == 'POST':
+        username = request.POST['username']
         nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
         descripcion = request.POST['descripcion']
         correo = request.POST['email']
         contrasenia = request.POST['contrasenia']
         foto_perfil = request.FILES['foto_perfil']
 
-        existe_usuario = Usuario.objects.filter(correo=correo).exists()
+        existe_usuario = User.objects.filter(email=correo).exists()
 
         if not(existe_usuario) :
-            nvo_periodista = Usuario.objects.create(nombre_completo=nombre, correo=correo, contrasenia=contrasenia, 
-                                id_tipo_usuario=TipoUsuario.objects.get(pk=2))
+            nvo_periodista = User.objects.create(username=username, first_name=nombre, last_name=apellido, email=correo,
+                                                password=contrasenia)
+            group = Group.objects.get(name='Periodista')
+            nvo_periodista.groups.add(group)
             PerfilPeriodista.objects.create(descripcion=descripcion, id_usuario=nvo_periodista, foto_perfil=foto_perfil)
             
             aux['mensaje'] = 'Periodista creado con éxito'
@@ -281,7 +263,7 @@ def crear_periodista(request):
 
 
 def editar_periodista(request, id):
-    periodista = Usuario.objects.get(id=id)
+    periodista = User.objects.get(id=id)
     perfil_periodista = PerfilPeriodista.objects.get(id_usuario=periodista.id)
     aux = {
         'periodista': periodista,
@@ -298,7 +280,7 @@ def editar_periodista(request, id):
         
 
         if periodista.correo != correo:
-            existe_usuario = Usuario.objects.filter(correo=correo).exists()
+            existe_usuario = User.objects.filter(email=correo).exists()
             if existe_usuario:
                 aux['mensaje'] = 'Ya existe un usuario con ese correo'
                 return render(request, 'core/paginas/admin/editar_periodista.html', aux)
@@ -316,7 +298,7 @@ def editar_periodista(request, id):
 
 
 def eliminar_periodista(request, id):
-    periodista = Usuario.objects.get(id=id)
+    periodista = User.objects.get(id=id)
     periodista.delete()
     return redirect(to='lista_periodistas_admin')
 
@@ -329,7 +311,13 @@ def lista_noticias_en_espera(request):
 
 
 def lista_periodistas_admin(request):
-    list_periodistas = Usuario.objects.filter(id_tipo_usuario=2)
+    list_periodistas = User.objects.raw("""
+        SELECT * 
+        FROM auth_user u INNER JOIN auth_user_groups g ON u.id = g.user_id
+        WHERE g.group_id = 2
+        """
+        )
+    
     aux = {
         'lista_periodistas' : list_periodistas
     }

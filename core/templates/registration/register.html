@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Login</title>
+  <title>Register</title>
   <meta name="description" content="Sitio web de noticias" />
   <link rel="icon" href="{% static 'core/img/icono.svg' %}" />
 
@@ -21,13 +21,13 @@
     <div class="image-container">
       <img src="{% static 'core/img/logo-dark.svg' %}" class="logo" alt="">
     </div>
-    <h1 class="main-title">Inicia sesión</h1>
+    <h1 class="main-title">Registro</h1>
     {% load crispy_forms_tags %}
     <form action="" method="POST" style=" display: flex; flex-direction: column; align-items: center; gap: 2rem; ">
       {% csrf_token %}
       {{ form|crispy }}
-      <input type="submit" class="btn btn-primary" value="Iniciar sesión">
-      <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate gratis</a></p>
+      <input type="submit" class="btn btn-primary" value="Crear cuenta">
+      <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
     </form>
     
   </main>
