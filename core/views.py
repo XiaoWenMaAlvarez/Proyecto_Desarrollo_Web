@@ -26,14 +26,13 @@ def register(request):
 
 
 def index(request):
-    ultimas_noticias = Noticia.objects.all().order_by('fecha')[:5]
+    ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('fecha')[:5]
     aux = {
         'lista_noticias': ultimas_noticias
     }
 
     if request.method == 'POST':
         busqueda = request.POST['busqueda']
-        # noticias_encontradas = Noticia.objects.filter(titulo__icontains=busqueda).filter(id_estado_noticia=2)
         noticias_encontradas = Noticia.objects.raw("""
         SELECT * 
         FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
@@ -59,7 +58,7 @@ def lista_categorias(request):
 
     noticias = {}
     for categoria in lista_categorias:
-        noticias[categoria.descripcion] = Noticia.objects.filter(id_categoria=categoria.id)
+        noticias[categoria.descripcion] = Noticia.objects.filter(id_categoria=categoria.id).filter(id_estado_noticia=2)
 
     aux = {
         "categorias": noticias.items()
@@ -144,9 +143,7 @@ def crear_noticia(request):
         else:
             categoria = CategoriaNoticia.objects.get(id=categoria)
 
-            # QUEMADO
-            autor = User.objects.get(id=8)
-            # QUEMADO
+            autor = request.user.id
             estado_noticia = EstadoNoticia.objects.get(id=1)
 
             nvaNoticia = Noticia.objects.create(titulo=titulo, ubicacion=ubicacion, portada= portada, cuerpo=cuerpo,
@@ -165,6 +162,10 @@ def crear_noticia(request):
 @permission_required('core.change_noticia')
 def editar_noticia(request, id):
     noticia = Noticia.objects.get(id=id)
+    id_usuario = request.user.id
+    if(noticia.id_autor.id != id_usuario):
+        return redirect(to='lista_noticias_publicadas')
+
     lista_categorias = CategoriaNoticia.objects.all()
     aux = {
         'noticia': noticia,
@@ -210,6 +211,9 @@ def editar_noticia(request, id):
 @permission_required('core.delete_noticia')
 def eliminar_noticia(request,id):
     noticia = Noticia.objects.get(id=id)
+    id_usuario = request.user.id
+    if(noticia.id_autor.id != id_usuario):
+        return redirect(to='lista_noticias_publicadas')
     noticia.delete()
     return redirect(to='lista_noticias_publicadas')
 
@@ -217,11 +221,14 @@ def eliminar_noticia(request,id):
 @login_required
 @permission_required('core.change_noticia')
 def lista_noticias_publicadas(request):
-    # ------------------ QUEMADO --------------------------
-    list_noticias = Noticia.objects.filter(id_autor=8)
+    id = request.user.id
+    list_noticias = Noticia.objects.filter(id_autor=id)
     aux = {
         'lista_noticias' : list_noticias
     }
+
+    
+    aux['mensaje'] = id
 
     return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
 
@@ -230,6 +237,10 @@ def lista_noticias_publicadas(request):
 def noticia_rechazada(request, id):
     aux = {}
     noticia = Noticia.objects.get(id=id)
+    id_usuario = request.user.id
+    if(noticia.id_autor.id != id_usuario):
+        return redirect(to='lista_noticias_publicadas')
+    
     existe_galeria = GaleriaImagenes.objects.filter(id_noticia=noticia.id).exists()
 
     if existe_galeria:

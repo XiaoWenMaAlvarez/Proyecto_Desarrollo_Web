@@ -44,7 +44,7 @@ class EstadoNoticia(models.Model):
 
 
 class Noticia(models.Model):
-    titulo = models.CharField(max_length=50, unique=True)
+    titulo = models.CharField(max_length=100, unique=True)
     ubicacion = models.CharField(max_length=50)
     fecha = models.DateField(auto_now=True)
     portada = models.ImageField(upload_to='portadas_noticias', blank=False, default='portada.jpg')
