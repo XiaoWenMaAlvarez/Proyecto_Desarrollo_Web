@@ -8,6 +8,7 @@
 
 {% block content %}
   <main class="container">
+    <p>{{mensaje}}</p>
     <h1 class="main-title">Formulario de contacto</h1>
     <form action="" method="POST">
       {% csrf_token %}
@@ -30,7 +31,6 @@
       <div class="buttons-container">
         <input type="submit" class="btn btn-success" value="Enviar mensaje">
       </div>
-      <p>{{mensaje}}</p>
     </form>
   </main>
   {% endblock %}

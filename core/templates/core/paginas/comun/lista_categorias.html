@@ -12,12 +12,12 @@
 
   <!-- Carrusel -->
   {% for categoria, lista_noticias in categorias %}
-  <div id="carusel1" class="carousel slide" data-bs-ride="carousel">  
+  <div id="{{categoria}}" class="carousel slide" data-bs-ride="carousel">  
     <div class="carousel-inner">
 
       <div class="carousel-item active">
         <div class="news-title-container">
-          <h2 class="news-title"> {{categoria}}</h2>
+          <h2 class="news-title">{{categoria}}</h2>
         </div>
         <img src="{% static 'core/img/logo-dark.svg' %}" alt="" class="d-block w-100">
       </div>
@@ -36,10 +36,10 @@
     </div>
     
     <!-- Left and right controls/icons -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#carusel1" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{categoria}}" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carusel1" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#{{categoria}}" data-bs-slide="next">
       <span class="carousel-control-next-icon"></span>
     </button>
   </div>

@@ -143,7 +143,9 @@ def crear_noticia(request):
         else:
             categoria = CategoriaNoticia.objects.get(id=categoria)
 
-            autor = request.user.id
+            id_autor = request.user.id
+            autor = User.objects.get(id=id_autor)
+
             estado_noticia = EstadoNoticia.objects.get(id=1)
 
             nvaNoticia = Noticia.objects.create(titulo=titulo, ubicacion=ubicacion, portada= portada, cuerpo=cuerpo,

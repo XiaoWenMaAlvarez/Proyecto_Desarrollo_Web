@@ -50,7 +50,7 @@ class Noticia(models.Model):
     portada = models.ImageField(upload_to='portadas_noticias', blank=False, default='portada.jpg')
     cuerpo = models.TextField()
 
-    id_autor = models.ForeignKey(User, on_delete=models.RESTRICT)
+    id_autor = models.ForeignKey(User, on_delete=models.CASCADE)
     id_categoria = models.ForeignKey(CategoriaNoticia, on_delete=models.RESTRICT)
     id_estado_noticia = models.ForeignKey(EstadoNoticia, on_delete=models.RESTRICT)
 
