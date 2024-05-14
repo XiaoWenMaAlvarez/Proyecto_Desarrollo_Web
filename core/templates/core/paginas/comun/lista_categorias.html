@@ -15,10 +15,15 @@
   <div id="{{categoria}}" class="carousel slide" data-bs-ride="carousel">  
     <div class="carousel-inner">
 
-      
+      <div class="carousel-item active">
+        <div class="news-title-container">
+          <h2 class="news-title">{{categoria}}</h2>
+        </div>
+        <img src="{% static 'core/img/logo-dark.svg' %}" alt="" class="d-block w-100">
+      </div>
 
       {% for noticia in lista_noticias %}
-      <div class="carousel-item active">
+      <div class="carousel-item">
         <a href="{% url 'noticia' noticia.id %}">
           <div class="news-title-container">
             <h2 class="news-title"> {{noticia.titulo}}</h2>
