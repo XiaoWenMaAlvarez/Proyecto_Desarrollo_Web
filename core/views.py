@@ -43,9 +43,8 @@ def index(request):
         """
         , [busqueda, busqueda, busqueda])
     
-        aux = {
-            'noticias_encontradas': noticias_encontradas
-        }
+        aux ['noticias_encontradas'] = noticias_encontradas
+        
         
         if len(noticias_encontradas) == 0:
             aux['mensaje'] = 'No se encontraron resultados'
@@ -91,8 +90,8 @@ def noticia(request, id):
 
 def periodista(request, id):
     perfil_periodista = PerfilPeriodista.objects.get(id_usuario=id)
-    cantidad_noticias = Noticia.objects.filter(id_autor=id).count()
-    lista_noticias = Noticia.objects.filter(id_autor=id)
+    cantidad_noticias = Noticia.objects.filter(id_autor=id).filter(id_estado_noticia=2).count()
+    lista_noticias = Noticia.objects.filter(id_autor=id).filter(id_estado_noticia=2)
 
     aux = {
         'perfil_periodista': perfil_periodista,

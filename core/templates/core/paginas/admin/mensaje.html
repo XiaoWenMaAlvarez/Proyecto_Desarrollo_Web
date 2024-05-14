@@ -13,19 +13,19 @@
       {% csrf_token %}
       <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" value="{{mensaje.nombre_completo}}" readonly>
+        <input type="text" class="form-control" id="exampleFormControlInput1" disabled value="{{mensaje.nombre_completo}}" readonly>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleFormControlInput2" value="{{mensaje.correo}}" readonly>
+        <input type="email" class="form-control" id="exampleFormControlInput2" disabled value="{{mensaje.correo}}" readonly>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput3" class="form-label">Asunto</label>
-        <input type="text" class="form-control" id="exampleFormControlInput3" value="{{mensaje.asunto}}" readonly>
+        <input type="text" class="form-control" id="exampleFormControlInput3" disabled value="{{mensaje.asunto}}" readonly>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" readonly>{{mensaje.mensaje}}</textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" disabled readonly>{{mensaje.mensaje}}</textarea>
       </div>
     </form>
   </main>
