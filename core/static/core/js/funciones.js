@@ -43,3 +43,11 @@ function eliminarNoticia(id) {
   });
   
 }
+
+const primer_slide = document.querySelectorAll(".carousel-item:first-child")
+const arreglo = [...primer_slide]
+
+for(let i = 0; i < arreglo.length; i++) {
+  arreglo[i].classList.add("active")
+}
+
