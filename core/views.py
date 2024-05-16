@@ -26,7 +26,7 @@ def register(request):
 
 
 def index(request):
-    ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('fecha')[:5]
+    ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('-fecha')[:5]
     aux = {
         'lista_noticias': ultimas_noticias
     }
