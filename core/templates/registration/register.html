@@ -14,6 +14,8 @@
   integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
 
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 <body>
   <!-- Contenido principal -->
@@ -27,6 +29,7 @@
     <form action="" method="POST" style=" display: flex; flex-direction: column; align-items: center; gap: 2rem; ">
       {% csrf_token %}
       {{ form|crispy }}
+      <div class="g-recaptcha" data-sitekey="6Lekmd8pAAAAACY6pek-W_JctCA3wM3G1qgGw2sU"></div>
       <input type="submit" class="btn btn-primary" value="Crear cuenta">
       <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
     </form>

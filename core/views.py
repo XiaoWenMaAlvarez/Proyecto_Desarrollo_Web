@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect
 
 from core.forms import CustomUserCreationForm
 from django.contrib.auth.models import Group, User
+
+from prueba import settings
 from .models import *
 
 from django.contrib.auth.decorators import login_required, permission_required
 
+import requests
 
 # Create your views here.
 
@@ -14,6 +17,18 @@ def register(request):
         'form': CustomUserCreationForm()
     }
     if request.method == 'POST':
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request,"registration/register.html", aux)
+
         formulario = CustomUserCreationForm(data=request.POST)
         if formulario.is_valid():
             user = formulario.save()
@@ -106,6 +121,18 @@ def contacto(request):
     aux = {}
 
     if request.method == 'POST':
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/paginas/comun/contacto.html', aux)
+        
         nombre_completo = request.POST['nombre_completo']
         correo = request.POST['correo']
         asunto = request.POST['asunto']
@@ -126,6 +153,18 @@ def crear_noticia(request):
     }
 
     if request.method == 'POST':
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
+        
         titulo = request.POST['titulo']
         ubicacion = request.POST['ubicacion']
         categoria = request.POST['categoria']
@@ -264,6 +303,18 @@ def crear_periodista(request):
     aux = {}
 
     if request.method == 'POST':
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/paginas/admin/crear_periodista.html',aux)
+        
         username = request.POST['username']
         nombre = request.POST['nombre']
         apellido = request.POST['apellido']

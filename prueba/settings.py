@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'PIL',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django_recaptcha',
     'core',
 ]
 
@@ -134,3 +135,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+RECAPTCHA_PUBLIC_KEY = '6Lekmd8pAAAAACY6pek-W_JctCA3wM3G1qgGw2sU'
+RECAPTCHA_PRIVATE_KEY = '6Lekmd8pAAAAAAddf0N158G20Y629p1EfZQO4vvz'
