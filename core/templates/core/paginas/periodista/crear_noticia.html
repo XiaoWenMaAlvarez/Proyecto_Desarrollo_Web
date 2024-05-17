@@ -8,18 +8,18 @@
 
 {% block content %}
   <main class="container">
-    <p>{{mensaje}}</p>
+    <p style="text-align: center; color: red; font-size: 3rem;">{{mensaje}}</p>
     <h1 class="main-title">Publicación de noticia.</h1>
     <form action="#" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="notice-form">
         <label for="notice-title" class="form-label subtitle">Título de la noticia</label>
-        <input type="text" class="form-control" id="notice-title" required name="titulo">
+        <input type="text" class="form-control" id="notice-title" required name="titulo" value="{{titulo}}">
       </div>
 
       <div class="notice-form">
         <label for="notice-location" class="form-label subtitle">Ubicación de la noticia</label>
-        <input type="text" class="form-control" id="notice-location" required name="ubicacion">
+        <input type="text" class="form-control" id="notice-location" required name="ubicacion" value="{{ubicacion}}">
       </div>
 
       <div class="notice-form">
@@ -27,14 +27,14 @@
         <select class="form-select" aria-label="Default select example" required name="categoria">
           <option selected value="0">Seleccione la categoría</option>
           {% for categoria in categorias %}
-            <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+              <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
           {% endfor %}
         </select>
       </div>
 
       <div class="notice-form">
         <label for="notice-body" class="form-label">Cuerpo de la noticia</label>
-        <textarea class="form-control" id="notice-body" rows="15" required name="cuerpo"></textarea>
+        <textarea class="form-control" id="notice-body" rows="15" required name="cuerpo">{{cuerpo}}</textarea>
       </div>
       
       <div class="notice-form">

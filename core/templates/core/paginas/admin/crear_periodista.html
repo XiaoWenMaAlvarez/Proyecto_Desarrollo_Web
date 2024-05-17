@@ -8,29 +8,29 @@
 
 {% block content %}
   <main>
-    <p style="text-align: center;">{{mensaje}}</p>
+    <p style="text-align: center; color: red; font-size: 3rem;">{{mensaje}}</p>
     <h1 class="main-title">Creación de cuenta de periodista</h1>
     <form class="container" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="username" required>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="username" required value="{{username}}">
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="nombre" required>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="nombre" required value="{{nombre}}">
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Apellido</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="apellido" required>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apellido" required value="{{apellido}}">
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="descripcion" required>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="descripcion" required value="{{descripcion}}">
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="email" required>
+        <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="email" required value="{{correo}}">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword3" class="form-label">Contraseña</label>

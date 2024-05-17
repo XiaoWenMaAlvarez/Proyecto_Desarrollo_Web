@@ -153,6 +153,15 @@ def crear_noticia(request):
     }
 
     if request.method == 'POST':
+        titulo = request.POST['titulo']
+        ubicacion = request.POST['ubicacion']
+        categoria = request.POST['categoria']
+        cuerpo = request.POST.get('cuerpo')
+        aux['titulo'] = titulo
+        aux['ubicacion'] = ubicacion
+        aux['categoriaSeleccionada'] = categoria
+        aux['cuerpo'] = cuerpo
+
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
             'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -165,10 +174,6 @@ def crear_noticia(request):
             aux['mensaje'] = "Error en el reCAPTCHA"
             return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
         
-        titulo = request.POST['titulo']
-        ubicacion = request.POST['ubicacion']
-        categoria = request.POST['categoria']
-        cuerpo = request.POST.get('cuerpo')
         portada = request.FILES.getlist('portada')[0]
         carrusel = request.FILES.getlist('carrusel')
 
@@ -303,6 +308,17 @@ def crear_periodista(request):
     aux = {}
 
     if request.method == 'POST':
+        username = request.POST['username']
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        descripcion = request.POST['descripcion']
+        correo = request.POST['email']
+        aux['username'] = username
+        aux['nombre'] = nombre
+        aux['apellido'] = apellido
+        aux['descripcion'] = descripcion
+        aux['correo'] = correo
+
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
             'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -315,11 +331,6 @@ def crear_periodista(request):
             aux['mensaje'] = "Error en el reCAPTCHA"
             return render(request, 'core/paginas/admin/crear_periodista.html',aux)
         
-        username = request.POST['username']
-        nombre = request.POST['nombre']
-        apellido = request.POST['apellido']
-        descripcion = request.POST['descripcion']
-        correo = request.POST['email']
         contrasenia = make_password(request.POST['contrasenia'])
         foto_perfil = request.FILES['foto_perfil']
 
