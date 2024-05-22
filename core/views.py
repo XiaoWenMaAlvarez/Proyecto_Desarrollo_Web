@@ -52,7 +52,7 @@ def index(request):
         SELECT * 
         FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
         WHERE ( 
-        INSTR(n.titulo, %s) != 0  OR  INSTR(u.first_name || ' ' || u.last_name, %s) != 0 OR  INSTR(c.descripcion, %s) != 0
+        POSITION(%s IN n.titulo ) != 0  OR  POSITION(%s IN u.first_name || ' ' || u.last_name) != 0 OR POSITION(%s IN c.descripcion ) != 0
         ) 
         AND n.id_estado_noticia_id = 2
         """
@@ -162,6 +162,10 @@ def crear_noticia(request):
         aux['categoriaSeleccionada'] = categoria
         aux['cuerpo'] = cuerpo
 
+        if len(titulo) > 150:
+            aux['mensaje'] = 'El título de la noticia excede el máximo (100 caracteres)'
+            return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
+
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
             'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -198,6 +202,10 @@ def crear_noticia(request):
                 GaleriaImagenes.objects.create(imagen=imagen, id_noticia=nvaNoticia)
             
             aux['mensaje'] = 'Noticia creada con éxito'
+            aux['titulo'] = ""
+            aux['ubicacion'] = ""
+            aux['categoriaSeleccionada'] = ""
+            aux['cuerpo'] = ""
 
             
 
@@ -344,6 +352,11 @@ def crear_periodista(request):
             PerfilPeriodista.objects.create(descripcion=descripcion, id_usuario=nvo_periodista, foto_perfil=foto_perfil)
             
             aux['mensaje'] = 'Periodista creado con éxito'
+            aux['username'] = username
+            aux['nombre'] = ""
+            aux['apellido'] = ""
+            aux['descripcion'] = ""
+            aux['correo'] = ""
         else:
             aux['mensaje'] = 'Ya existe un usuario con ese correo'
 
