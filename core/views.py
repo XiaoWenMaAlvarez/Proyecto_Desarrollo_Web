@@ -119,8 +119,19 @@ def periodista(request, id):
 
 def contacto(request):
     aux = {}
+    
 
     if request.method == 'POST':
+        nombre_completo = request.POST['nombre_completo']
+        correo = request.POST['correo']
+        asunto = request.POST['asunto']
+        mensaje = request.POST.get('mensaje')
+
+        aux['nombre_completo'] = nombre_completo
+        aux['correo'] = correo
+        aux['asunto'] = asunto
+        aux['contenido_mensaje'] = mensaje
+
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
             'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -132,15 +143,14 @@ def contacto(request):
         if not(result['success']):
             aux['mensaje'] = "Error en el reCAPTCHA"
             return render(request, 'core/paginas/comun/contacto.html', aux)
-        
-        nombre_completo = request.POST['nombre_completo']
-        correo = request.POST['correo']
-        asunto = request.POST['asunto']
-        mensaje = request.POST.get('mensaje')
 
         Mensaje.objects.create(nombre_completo=nombre_completo, correo=correo, asunto=asunto, mensaje=mensaje)
             
         aux['mensaje'] = 'Mensaje enviado con éxito'
+        aux['nombre_completo'] = ""
+        aux['correo'] = ""
+        aux['asunto'] = ""
+        aux['mensaje'] = ""
     return render(request, 'core/paginas/comun/contacto.html', aux)
 
 
@@ -163,7 +173,7 @@ def crear_noticia(request):
         aux['cuerpo'] = cuerpo
 
         if len(titulo) > 150:
-            aux['mensaje'] = 'El título de la noticia excede el máximo (100 caracteres)'
+            aux['mensaje'] = 'El título de la noticia excede el máximo (150 caracteres)'
             return render(request, 'core/paginas/periodista/crear_noticia.html', aux)
 
         recaptcha_response = request.POST.get('g-recaptcha-response')
@@ -232,6 +242,10 @@ def editar_noticia(request, id):
         cuerpo = request.POST.get('cuerpo')
         portada = request.FILES.getlist('portada')[0]
         carrusel = request.FILES.getlist('carrusel')
+
+        if len(titulo) > 150:
+            aux['mensaje'] = 'El título de la noticia excede el máximo (150 caracteres)'
+            return render(request, 'core/paginas/admin/editar_periodista.html', aux)
 
         if noticia.titulo != titulo:
             existe_noticia = Noticia.objects.filter(titulo=titulo).exists()

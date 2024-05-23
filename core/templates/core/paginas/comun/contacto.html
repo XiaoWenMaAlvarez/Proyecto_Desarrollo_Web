@@ -8,25 +8,25 @@
 
 {% block content %}
   <main class="container">
-    <p>{{mensaje}}</p>
+    <p style="text-align: center; color: red; font-size: 3rem;">{{mensaje}}</p>
     <h1 class="main-title">Formulario de contacto</h1>
     <form action="" method="POST">
       {% csrf_token %}
       <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" name="nombre_completo" required>
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="nombre_completo" required value="{{nombre_completo}}">
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput2" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="exampleFormControlInput2" name="correo" required>
+        <input type="email" class="form-control" id="exampleFormControlInput2" name="correo" required value="{{correo}}">
       </div>
       <div class="mb-3">
         <label for="exampleFormControlInput3" class="form-label">Asunto</label>
-        <input type="text" class="form-control" id="exampleFormControlInput3" name="asunto" required>
+        <input type="text" class="form-control" id="exampleFormControlInput3" name="asunto" required value="{{asunto}}">
       </div>
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" name="mensaje" required></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" name="mensaje" required>{{contenido_mensaje}}</textarea>
       </div>
       <div class="g-recaptcha" data-sitekey="6Lekmd8pAAAAACY6pek-W_JctCA3wM3G1qgGw2sU"></div>
       <div class="buttons-container">
