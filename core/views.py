@@ -366,7 +366,7 @@ def crear_periodista(request):
             PerfilPeriodista.objects.create(descripcion=descripcion, id_usuario=nvo_periodista, foto_perfil=foto_perfil)
             
             aux['mensaje'] = 'Periodista creado con éxito'
-            aux['username'] = username
+            aux['username'] = ""
             aux['nombre'] = ""
             aux['apellido'] = ""
             aux['descripcion'] = ""
