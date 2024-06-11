@@ -1,4 +1,4 @@
-{% extends 'core/base.html'%}
+{% extends 'core/crudapi/base.html'%}
 
 {% load static %}
 
@@ -23,14 +23,35 @@
             <th scope="row">{{noticia.id_estado_noticia.descripcion}}</th>
             <td>{{noticia.titulo}}</td>
             {% if noticia.id_estado_noticia.id != 3 %}
-              <td class="link"><a href="{% url 'editar_noticia' noticia.id %}">Editar</a></td>
+              <td class="link"><a href="{% url 'editar_noticia_api' noticia.id %}">Editar</a></td>
               <td class="link"><a style="cursor: pointer;" onclick="eliminarNoticia({{noticia.id}})">Eliminar</a></td>
             {% else %}
-              <td class="link" colspan="2"><a href="{% url 'noticia_rechazada' noticia.id %}">Ver motivo</a></td>
+              <td class="link" colspan="2"><a href="{% url 'noticia_rechazada_api' noticia.id %}">Ver motivo</a></td>
             {% endif %}
           </tr>
         {% endfor %}
       </tbody>
     </table>
+    <nav aria-label="Page navigation example" style="display: flex; justify-content: center;">
+      <ul class="pagination">
+         {% if lista_noticias.has_previous %}
+         <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primera</a></li>
+         <li class="page-item"><a class="page-link" href="?page={{ lista_noticias.previous_page_number }}">Anterior</a></li>
+         {% endif %}
+
+         {% for num in lista_noticias.paginator.page_range %}
+         {% if lista_noticias.number == num %}
+         <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+         {% elif num > lista_noticias.number|add:'-5' and num < lista_noticias.number|add:'5' %}
+         <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+         {% endif %}
+         {% endfor %}
+
+         {% if lista_noticias.has_next %}
+         <li class="page-item"><a class="page-link" href="?page={{ lista_noticias.next_page_number }}">Siguiente</a></li>
+         <li class="page-item"><a class="page-link" href="?page={{ lista_noticias.paginator.num_pages }}">Última &raquo;</a></li>
+         {% endif %}
+      </ul>
+   </nav>
   </main>
 {% endblock %}

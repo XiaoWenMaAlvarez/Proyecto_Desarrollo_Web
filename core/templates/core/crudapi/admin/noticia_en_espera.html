@@ -1,4 +1,4 @@
-{% extends 'core/base.html'%}
+{% extends 'core/crudapi/base.html'%}
 
 {% load static %}
 
@@ -12,7 +12,7 @@
     <div class="container"> 
       <h1 class="news-title">{{noticia.titulo}}</h1>
       <div class="news-description">
-        <p class="author">Autor: <a href="{% url 'periodista' noticia.id_autor.id %}">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a></p>
+        <p class="author">Autor: <a href="{% url 'periodista_api' noticia.id_autor.id %}">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a></p>
         <p class="date">Fecha: {{noticia.fecha}}</p>
         <p class="category">Ubicación: {{noticia.ubicacion}}</p>
         <p class="category">Categoría: {{noticia.id_categoria.descripcion}}</p>

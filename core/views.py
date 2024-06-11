@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 import requests
 
 from rest_framework import generics
+from django.core.paginator import Paginator
+
 
 
 # Create your views here.
@@ -44,28 +46,76 @@ def register(request):
     return render(request,"registration/register.html", aux)
 
 
+def busqueda(request, page, busqueda):
+    ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('-fecha')[:5]
+    aux = {
+        'lista_noticias': ultimas_noticias
+    }
+
+    noticias_encontradas = []
+
+    if request.method == 'POST':
+        busqueda = request.POST['busqueda']
+
+    aux["busqueda"] = busqueda
+    noticias_encontradas = Noticia.objects.raw("""
+            SELECT * 
+            FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
+            WHERE ( 
+            POSITION(%s IN n.titulo ) != 0  OR  POSITION(%s IN u.first_name || ' ' || u.last_name) != 0 OR POSITION(%s IN c.descripcion ) != 0
+            ) 
+            AND n.id_estado_noticia_id = 2 ORDER BY n.fecha DESC
+            """
+            , [busqueda, busqueda, busqueda])
+
+    if len(noticias_encontradas) == 0:
+        aux['mensaje'] = 'No se encontraron resultados para ' + busqueda
+        return render(request, 'core/index.html', aux)
+    
+    paginator = Paginator(noticias_encontradas, 2)
+    page_number = page
+    if request.method == 'POST':
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+
+    aux ['noticias_encontradas'] = page_obj
+
+    return render(request, 'core/index.html', aux)
+    
+
 def index(request):
     ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('-fecha')[:5]
     aux = {
         'lista_noticias': ultimas_noticias
     }
 
+    noticias_encontradas = []
+
     if request.method == 'POST':
         busqueda = request.POST['busqueda']
-        noticias_encontradas = Noticia.objects.raw("""
-        SELECT * 
-        FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
-        WHERE ( 
-        POSITION(%s IN n.titulo ) != 0  OR  POSITION(%s IN u.first_name || ' ' || u.last_name) != 0 OR POSITION(%s IN c.descripcion ) != 0
-        ) 
-        AND n.id_estado_noticia_id = 2
-        """
-        , [busqueda, busqueda, busqueda])
+        aux["busqueda"] = busqueda
     
-        aux ['noticias_encontradas'] = noticias_encontradas
+        noticias_encontradas = Noticia.objects.raw("""
+            SELECT * 
+            FROM core_noticia n INNER JOIN core_categorianoticia c ON c.id = n.id_categoria_id INNER JOIN auth_user u ON u.id = n.id_autor_id 
+            WHERE ( 
+            POSITION(%s IN n.titulo ) != 0  OR  POSITION(%s IN u.first_name || ' ' || u.last_name) != 0 OR POSITION(%s IN c.descripcion ) != 0
+            ) 
+            AND n.id_estado_noticia_id = 2 ORDER BY n.fecha DESC
+            """
+            , [busqueda, busqueda, busqueda])
+        
+        aux ['busqueda'] = busqueda
         
         if len(noticias_encontradas) == 0:
-            aux['mensaje'] = 'No se encontraron resultados'
+            aux['mensaje'] = 'No se encontraron resultados para ' + busqueda
+            return render(request, 'core/index.html', aux)
+
+        paginator = Paginator(noticias_encontradas, 2)
+        page_number = 1
+        page_obj = paginator.get_page(page_number)
+
+        aux ['noticias_encontradas'] = page_obj
 
     return render(request, 'core/index.html', aux)
 
@@ -86,8 +136,12 @@ def lista_categorias(request):
 
 def lista_periodistas(request):
     lista_perfil_periodistas = PerfilPeriodista.objects.all()
+    paginator = Paginator(lista_perfil_periodistas, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_perfil_periodistas': lista_perfil_periodistas
+        'lista_perfil_periodistas': page_obj
     }
     return render(request, 'core/paginas/comun/lista_periodistas.html', aux)
 
@@ -111,10 +165,14 @@ def periodista(request, id):
     cantidad_noticias = Noticia.objects.filter(id_autor=id).filter(id_estado_noticia=2).count()
     lista_noticias = Noticia.objects.filter(id_autor=id).filter(id_estado_noticia=2)
 
+    paginator = Paginator(lista_noticias, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
         'perfil_periodista': perfil_periodista,
         'cantidad_noticias': cantidad_noticias,
-        'lista_noticias': lista_noticias
+        'lista_noticias': page_obj
     }
     
     return render(request, 'core/paginas/comun/periodista.html', aux)
@@ -290,8 +348,13 @@ def eliminar_noticia(request,id):
 def lista_noticias_publicadas(request):
     id = request.user.id
     list_noticias = Noticia.objects.filter(id_autor=id)
+
+    paginator = Paginator(list_noticias, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_noticias' : list_noticias
+        'lista_noticias' : page_obj
     }
     aux['mensaje'] = id
     return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
@@ -425,8 +488,13 @@ def eliminar_periodista(request, id):
 @permission_required('auth.delete_user')
 def lista_noticias_en_espera(request):
     list_noticias = Noticia.objects.filter(id_estado_noticia=1)
+
+    paginator = Paginator(list_noticias, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_noticias': list_noticias
+        'lista_noticias': page_obj
     }
     return render(request, 'core/paginas/admin/lista_noticias_en_espera.html', aux)
 
@@ -440,8 +508,12 @@ def lista_periodistas_admin(request):
         """
         )
     
+    paginator = Paginator(list_periodistas, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_periodistas' : list_periodistas
+        'lista_periodistas' : page_obj
     }
 
     return render(request, 'core/paginas/admin/lista_periodistas.html', aux)
@@ -483,9 +555,14 @@ def aceptar_noticia(request, id):
 @login_required
 @permission_required('auth.change_user')
 def lista_mensajes(request):
-    lista_mensajes = Mensaje.objects.all()
+    lista_mensajes = Mensaje.objects.all().order_by('-fecha')
+
+    paginator = Paginator(lista_mensajes, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_mensajes' : lista_mensajes
+        'lista_mensajes' : page_obj
     }
 
     return render(request, 'core/paginas/admin/lista_mensajes.html', aux)
@@ -506,7 +583,7 @@ from .serializers import *
 from rest_framework.renderers import JSONRenderer
 
 class MensajeViewset(viewsets.ModelViewSet):
-    queryset = Mensaje.objects.all()
+    queryset = Mensaje.objects.all().order_by("-fecha")
     serializer_class = MensajeSerializers
     renderer_classes = [JSONRenderer]
 
@@ -560,8 +637,13 @@ from django.http import JsonResponse
 def lista_mensajes_api(request):
     response = requests.get('http://127.0.0.1:8000/api/mensaje/')
     mensajes = response.json()
+
+    paginator = Paginator(mensajes, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-    'lista_mensajes': mensajes
+    'lista_mensajes': page_obj
     }
 
     return render(request, 'core/crudapi/admin/lista_mensajes.html', aux)
@@ -579,8 +661,13 @@ def mensaje_api(request, id):
 def lista_periodistas_api(request):
     response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
     lista_perfil_periodistas = response.json()
+
+    paginator = Paginator(lista_perfil_periodistas, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_perfil_periodistas': lista_perfil_periodistas
+        'lista_perfil_periodistas': page_obj
     }
     return render(request, 'core/crudapi/comun/lista_periodistas.html', aux)
 
@@ -605,8 +692,6 @@ def aplicar_busqueda(noticias, busqueda):
     noticias_a_borrar.reverse()
     for i in noticias_a_borrar:
         noticias.pop(i)
-            
-
 
 def index_api(request):
     response = requests.get('http://127.0.0.1:8000/api/noticia/')
@@ -617,18 +702,25 @@ def index_api(request):
         'lista_noticias': noticias[0:5]
     }
 
+    noticias_encontradas = []
     if request.method == 'POST':
         busqueda = request.POST['busqueda']
+        aux['busqueda'] = busqueda
         response = requests.get('http://127.0.0.1:8000/api/noticia/')
         noticias_encontradas = response.json()
         noticias_encontradas = list(filter(es_noticia_aprobada, noticias_encontradas))
         aplicar_busqueda(noticias_encontradas, busqueda)
         ordenar_noticias_recientes(noticias_encontradas)
-    
-        aux ['noticias_encontradas'] = noticias_encontradas
-        
+            
         if len(noticias_encontradas) == 0:
-            aux['mensaje'] = 'No se encontraron resultados'
+            aux['mensaje'] = 'No se encontraron resultados para ' + busqueda
+            return render(request, 'core/crudapi/index.html', aux)
+        
+        paginator = Paginator(noticias_encontradas, 2)
+        page_number = 1
+        page_obj = paginator.get_page(page_number)
+        
+        aux ['noticias_encontradas'] = page_obj
 
     return render(request, 'core/crudapi/index.html', aux)
 
@@ -679,12 +771,16 @@ def periodista_api(request, id):
     lista_noticias = response.json()
     lista_noticias = list(filter(es_noticia_aprobada, lista_noticias))
     lista_noticias = list(filter(lambda noticia: noticia["id_autor"]["id"] == int(id), lista_noticias))
+
+    paginator = Paginator(lista_noticias, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
 
     aux = {
         'perfil_periodista': perfil_periodista,
         'cantidad_noticias': len(lista_noticias),
-        'lista_noticias': lista_noticias
+        'lista_noticias': page_obj
     }
     
     return render(request, 'core/crudapi/comun/periodista.html', aux)
@@ -747,8 +843,12 @@ def lista_noticias_publicadas_api(request):
     lista_noticias = response.json()
     lista_noticias = list(filter(lambda noticia: noticia["id_autor"]["id"] == int(id), lista_noticias))
 
+    paginator = Paginator(lista_noticias, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_noticias' : lista_noticias
+        'lista_noticias' : page_obj
     }
     aux['mensaje'] = id
     return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
@@ -786,8 +886,12 @@ def lista_noticias_en_espera_api(request):
     lista_noticias = response.json()
     lista_noticias = list(filter(lambda noticia: noticia["id_estado_noticia"]["id"] == 1, lista_noticias))
 
+    paginator = Paginator(lista_noticias, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     aux = {
-        'lista_noticias': lista_noticias
+        'lista_noticias': page_obj
     }
     return render(request, 'core/crudapi/admin/lista_noticias_en_espera.html', aux)
 
@@ -797,8 +901,14 @@ def lista_periodistas_admin_api(request):
     response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
     list_periodistas = response.json()
     list_periodistas = list(map(lambda perfil: perfil["id_usuario"], list_periodistas))    
+
+    paginator = Paginator(list_periodistas, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+
     aux = {
-        'lista_periodistas' : list_periodistas
+        'lista_periodistas' : page_obj
     }
 
     return render(request, 'core/crudapi/admin/lista_periodistas.html', aux)
@@ -853,7 +963,7 @@ def noticia_en_espera_api(request, id):
 
 @login_required
 @permission_required('auth.change_user')
-def aceptar_noticia(request, id):
+def aceptar_noticia_api(request, id):
     aux = {}
     response = requests.get(f'http://127.0.0.1:8000/api/noticia/{id}')
     noticia = response.json()
@@ -1207,3 +1317,37 @@ def editar_periodista_api(request, id):
 def eliminar_periodista_api(request, id):
     response = requests.delete(f'http://127.0.0.1:8000/api/user/{id}')
     return redirect(to='lista_periodistas_admin')
+
+def busqueda_api(request, page, busqueda):
+    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    noticias = response.json()
+    noticias = list(filter(es_noticia_aprobada, noticias))
+    ordenar_noticias_recientes(noticias)
+    aux = {
+        'lista_noticias': noticias[0:5]
+    }
+
+    noticias_encontradas = []
+    if request.method == 'POST':
+        busqueda = request.POST['busqueda']
+    
+    aux['busqueda'] = busqueda
+    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    noticias_encontradas = response.json()
+    noticias_encontradas = list(filter(es_noticia_aprobada, noticias_encontradas))
+    aplicar_busqueda(noticias_encontradas, busqueda)
+    ordenar_noticias_recientes(noticias_encontradas)
+            
+    if len(noticias_encontradas) == 0:
+        aux['mensaje'] = 'No se encontraron resultados para ' + busqueda
+        return render(request, 'core/crudapi/index.html', aux)
+        
+    paginator = Paginator(noticias_encontradas, 2)
+    page_number = page
+    if request.method == 'POST':
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+        
+    aux ['noticias_encontradas'] = page_obj
+
+    return render(request, 'core/crudapi/index.html', aux)

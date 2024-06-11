@@ -25,7 +25,7 @@
   <!-- Header -->
   <header class="main-header">
     <div class="main-header_content">
-      <a href="{% url 'index' %}"><img src="{% static 'core/img/logo-light.svg' %}" class="logo" alt="Logo Caos News"></a>
+      <a href="{% url 'index_api' %}"><img src="{% static 'core/img/logo-light.svg' %}" class="logo" alt="Logo Caos News"></a>
 
       {% if user.is_authenticated %}
       <form action="{% url 'logout' %}" class="login-button" method="POST" style="padding-top: 0;">
@@ -42,23 +42,23 @@
       <nav id="main-menu" class="main-menu">
         <ul>
           <a href="#" class="icon close-icon"><img src="{% static 'core/icons/close-icon.svg' %}" alt="Ícono de cierre"></a>
-          <li><a href="{% url 'index' %}">Inicio</a></li>
-          <li><a href="{% url 'lista_categorias' %}">Categorías</a></li>
-          <li><a href="{% url 'lista_periodistas' %}">Periodistas</a></li>
-          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          <li><a href="{% url 'index_api' %}">Inicio</a></li>
+          <li><a href="{% url 'lista_categorias_api' %}">Categorías</a></li>
+          <li><a href="{% url 'lista_periodistas_api' %}">Periodistas</a></li>
+          <li><a href="{% url 'contacto_api' %}">Contacto</a></li>
 
           {% for group in user.groups.all %}
             {% if group.name == 'Periodista' %}
-              <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
-              <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>
+              <li><a href="{% url 'crear_noticia_api' %}">Crear noticia</a></li>
+              <li><a href="{% url 'lista_noticias_publicadas_api' %}">Editar noticia</a></li>
             {% endif %}
           {% endfor %}
 
           {% for group in user.groups.all %}
             {% if group.name == 'Administrador' %}
-              <li><a href="{% url 'lista_noticias_en_espera' %}">Lista de noticias en espera</a></li>
-              <li><a href="{% url 'lista_periodistas_admin' %}">Administrar cuentas de periodistas</a></li>
-              <li><a href="{% url 'lista_mensajes' %}">Ver mensajes</a></li>
+              <li><a href="{% url 'lista_noticias_en_espera_api' %}">Lista de noticias en espera</a></li>
+              <li><a href="{% url 'lista_periodistas_admin_api' %}">Administrar cuentas de periodistas</a></li>
+              <li><a href="{% url 'lista_mensajes_api' %}">Ver mensajes</a></li>
             {% endif %}
           {% endfor %}
 

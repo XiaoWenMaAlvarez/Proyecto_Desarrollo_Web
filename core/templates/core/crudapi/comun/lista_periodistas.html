@@ -1,4 +1,4 @@
-{% extends 'core/base.html'%}
+{% extends 'core/crudapi/base.html'%}
 
 {% load static %}
 
@@ -19,11 +19,32 @@
       <div class="card-body">
         <h5 class="card-title">{{perfil_periodista.id_usuario.first_name}} {{perfil_periodista.id_usuario.last_name}}</h5>
         <p class="card-text">{{perfil_periodista.descripcion}}</p>
-        <a href="{% url 'periodista' perfil_periodista.id_usuario.id %}" class="btn btn-primary">Ver noticias</a>
+        <a href="{% url 'periodista_api' perfil_periodista.id_usuario.id %}" class="btn btn-primary">Ver noticias</a>
       </div>
     </div>
     {% endfor %}
     
   </div>
+  <nav aria-label="Page navigation example" style="display: flex; justify-content: center;">
+    <ul class="pagination">
+       {% if lista_perfil_periodistas.has_previous %}
+       <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primera</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ lista_perfil_periodistas.previous_page_number }}">Anterior</a></li>
+       {% endif %}
+
+       {% for num in lista_perfil_periodistas.paginator.page_range %}
+       {% if lista_perfil_periodistas.number == num %}
+       <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+       {% elif num > lista_perfil_periodistas.number|add:'-5' and num < lista_perfil_periodistas.number|add:'5' %}
+       <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+       {% endif %}
+       {% endfor %}
+
+       {% if lista_perfil_periodistas.has_next %}
+       <li class="page-item"><a class="page-link" href="?page={{ lista_perfil_periodistas.next_page_number }}">Siguiente</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ lista_perfil_periodistas.paginator.num_pages }}">Última &raquo;</a></li>
+       {% endif %}
+    </ul>
+ </nav>
 </main>
 {% endblock %}
