@@ -1,0 +1,79 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/noticia.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main>
+    <!-- Título y descripción de la noticia-->
+    <div class="container"> 
+      <h1 class="news-title">{{noticia.titulo}}</h1>
+      <div class="news-description">
+        <p class="author">Autor: <a href="{% url 'periodista' noticia.id_autor.id %}">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a></p>
+        <p class="date">Fecha: {{noticia.fecha}}</p>
+        <p class="category">Ubicación: {{noticia.ubicacion}}</p>
+        <p class="category">Categoría: {{noticia.id_categoria.descripcion}}</p>
+      </div>
+    </div>
+
+    <!-- Portada de la noticia -->
+    <div class="news-banner container-fluid">
+      <img src="{{noticia.portada}}" class="d-block w-100" alt="...">
+    </div>
+
+    <!-- Contenido de la noticia -->
+    <div class="news-content container">
+      <p>
+        {{noticia.cuerpo}}
+      </p>
+    </div>
+
+    <!-- Galería de fotos -->
+    <div class="container-lg">
+      <h2 class="photo-gallery-title">Galería de fotos</h2>
+    </div>
+    <div class="photo-gallery container-lg">
+      <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+
+          <!-- Ítem de carrusel -->
+          {% for imagen in galeria %}
+            <div class="carousel-item active">
+              <img src="{{imagen.imagen}}" class="d-block w-100" alt="...">
+            </div>
+          {% endfor %}
+
+        </div>
+        <!-- Fin de ítem de carrusel-->
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    <!-- Fin de galería de fotos -->
+
+    <form action="" class="container" method="POST">
+      <p>{{mensaje}}</p>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Escriba el motivo de rechazo:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="mensaje" required></textarea>
+      </div>
+
+      <div class="buttons-container container">
+        <a href="{% url 'aceptar_noticia' noticia.id %}" class="btn btn-success">Publicar noticia</a>
+        <input type="submit" class="btn btn-danger" value="Rechazar noticia">
+      </div>
+
+    </form>    
+  </main>
+  {% endblock %}

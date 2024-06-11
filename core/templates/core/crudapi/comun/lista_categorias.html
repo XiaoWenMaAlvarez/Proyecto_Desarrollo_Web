@@ -1,0 +1,47 @@
+
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+<link rel="stylesheet" href="{% static 'core/css/lista_categorias.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+  <!-- Carrusel -->
+  {% for categoria, lista_noticias in categorias %}
+  <div id="{{categoria}}" class="carousel slide" data-bs-ride="carousel">  
+    <div class="carousel-inner">
+
+      {% for noticia in lista_noticias %}
+      <div class="carousel-item">
+        <a href="{% url 'noticia' noticia.id %}">
+          <div class="news-title-container">
+            <h2 class="news-title"> {{noticia.titulo}}</h2>
+          </div>
+          <img src="{{noticia.portada}}" alt="" class="d-block w-100">
+        </a>
+      </div>
+      {% endfor %}
+      
+    </div>
+    
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{categoria}}" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#{{categoria}}" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <div class="btn-titulo">
+    <button type="button" class="btn btn-primary etiqueta">{{categoria}}</button>
+  </div>
+  {% endfor %}
+  <!--FIN DEL CARRUSEL -->
+
+</main>
+{% endblock %}

@@ -77,7 +77,7 @@ class GaleriaImagenes(models.Model):
 
 
 class MensajeRechazoNoticia(models.Model):
-    mensaje_rechazo = models.EmailField(max_length=200)
+    mensaje_rechazo = models.CharField(max_length=200)
     id_noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
 
     def __str__(self):

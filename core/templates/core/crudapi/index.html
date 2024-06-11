@@ -1,0 +1,84 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/principal.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+
+<main>
+    <h1 class="main-title">Noticias destacadas</h1>
+    <div id="carouselExampleIndicators" class="carousel slide">
+
+      <!-- Ítems del carrusel -->
+      <div class="carousel-inner">
+        
+        {% for noticia in lista_noticias %}
+        <div class="carousel-item">
+          <a href="{% url 'noticia' noticia.id %}">
+            <div class="news-title-container">
+              <h2 class="news-title"> {{noticia.titulo}}</h2>
+            </div>
+            <img src="{{noticia.portada}}" alt="" class="d-block w-100">
+          </a>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- Fin de Ítems del carrusel -->
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    
+    <!-- Fin del carrusel-->
+
+    <!-- Formulario de búsqueda -->
+    <div class="container">
+      <h1 class="search-title">Búsqueda por categoría, periodista o palabra clave</h1>
+      <form class="d-flex search-form" role="search" method="POST">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Ingresa tu búsqueda" aria-label="Search" name="busqueda" required>
+        <button class="btn btn-search" type="submit">Buscar</button>
+      </form>
+    </div>
+    <!-- Fin del formulario de búsqueda -->
+    
+    <!-- Resultados de búsqueda -->
+    <div class="container search-result">
+      <h2 class="search-text">Resultados de búsqueda</h2>
+
+      <div class="news-container">
+        <p>{{mensaje}}</p>
+
+        {% for noticia in noticias_encontradas %}
+        <div class="news">
+          <a href="{% url 'noticia' noticia.id %}">
+            <img class="news-banner" src="{{noticia.portada}}" alt="">
+          </a>
+          <div class="news-text">
+            <a href="{% url 'noticia' noticia.id %}">
+              <h2 class="news-title">{{noticia.titulo}}</h2>
+            </a>
+            <p class="news-description hide">por <a href="{% url 'periodista' noticia.id_autor.id %}" class="journalist">{{noticia.id_autor.first_name}} {{noticia.id_autor.last_name}}</a></p>
+            <p class="news-description">{{noticia.fecha}}</p>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </main>
+  {% endblock %}

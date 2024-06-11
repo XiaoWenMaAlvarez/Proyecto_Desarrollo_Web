@@ -5,3 +5,6 @@ pillow
 django-recaptcha
 requests
 psycopg2
+djangorestframework
+django-admin-confirm
+django-axes

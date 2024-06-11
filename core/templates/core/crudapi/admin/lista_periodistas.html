@@ -1,0 +1,38 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/lista_noticias_publicadas.css' %}">
+  {% endblock %}
+
+{% block content %}
+  <main>
+    <p style="text-align: center;">{{mensaje}}</p>
+    <table class="table container">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Link</th>
+          <th scope="col">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for periodista in lista_periodistas %}
+          <tr>
+            <th scope="row">{{periodista.first_name}} {{periodista.last_name}}</th>
+            <td class="link"><a href="{% url 'editar_periodista' periodista.id %}">Editar</a></td>
+            <td class="link"><a style="cursor: pointer;" onclick="eliminarPeriodista({{periodista.id}})">Eliminar</a></td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="button-container">
+      <a href="{% url 'crear_periodista' %}"><button type="button" class="btn btn-success btn-lg">Crear nueva cuenta</button></a>
+    </div>
+  </main>
+{% endblock %}
+
+  

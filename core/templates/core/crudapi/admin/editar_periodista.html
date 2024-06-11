@@ -1,0 +1,47 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/crear_periodista.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- Contenido principal -->
+  <main>
+    <p style="text-align: center; color: red; font-size: 3rem;">{{mensaje}}</p>
+    <h1 class="main-title">Editar cuenta de periodista</h1>
+    <form class="container" action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="username"  value="{{periodista.username}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="nombre"  value="{{periodista.first_name}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="apellido"  value="{{periodista.last_name}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{perfil_periodista.descripcion}}" required name="descripcion">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail2" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" id="exampleInputEmail2" value="{{periodista.email}}" required name="email">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword3" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="exampleInputPassword3" value="" required name="contrasenia">
+      </div>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Foto de perfil</label>
+        <input class="form-control" type="file" id="formFile" required name="foto_perfil">
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-bottom: 2rem;">Editar cuenta</button>
+    </form>
+  </main>
+{% endblock %}
