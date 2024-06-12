@@ -11,6 +11,18 @@
 {% block content %}
 
 <main>
+  <div class="contenedor-indicadores">
+    <img src="{% static 'core/img/money-baner.jpg' %}" class="money-baner" alt="">
+    <div class="indicadores animation">
+    {% for moneda in indicadores %}
+    <div class="item ">
+      <h4 class="name">{{moneda.nombre}}</h4>
+      <p class="value">Valor: {{moneda.valor}} {{moneda.unidad_medida}}</p>
+    </div>
+    {% endfor %}
+    </div>  
+  </div>
+  
     <h1 class="main-title">Noticias destacadas</h1>
     <div id="carouselExampleIndicators" class="carousel slide">
 

@@ -89,6 +89,29 @@ def index(request):
         'lista_noticias': ultimas_noticias
     }
 
+    response = requests.get('https://mindicador.cl/api')
+    indicadores = response.json()
+    del indicadores["version"]
+    del indicadores["autor"]
+    del indicadores["fecha"]
+
+    lista_monedas = []
+
+    for llave in indicadores:
+        lista_monedas.append(indicadores[llave])
+    
+    for i in range(len(lista_monedas)):
+        if lista_monedas[i]["unidad_medida"] == "Porcentaje":
+            lista_monedas[i]["valor"] = "{:,}".format(lista_monedas[i]["valor"]).replace(".", ",") + "%"
+            lista_monedas[i]["unidad_medida"] = ""
+        else:
+            lista_monedas[i]["valor"] = "{:,}".format(round(lista_monedas[i]["valor"])).replace(",", ".")
+        
+        if lista_monedas[i]["unidad_medida"] == "Dólar":
+            lista_monedas[i]["unidad_medida"] = "Dólares"
+    
+    aux["indicadores"] = lista_monedas
+
     noticias_encontradas = []
 
     if request.method == 'POST':
@@ -701,6 +724,29 @@ def index_api(request):
     aux = {
         'lista_noticias': noticias[0:5]
     }
+
+    response = requests.get('https://mindicador.cl/api')
+    indicadores = response.json()
+    del indicadores["version"]
+    del indicadores["autor"]
+    del indicadores["fecha"]
+
+    lista_monedas = []
+
+    for llave in indicadores:
+        lista_monedas.append(indicadores[llave])
+    
+    for i in range(len(lista_monedas)):
+        if lista_monedas[i]["unidad_medida"] == "Porcentaje":
+            lista_monedas[i]["valor"] = "{:,}".format(lista_monedas[i]["valor"]).replace(".", ",") + "%"
+            lista_monedas[i]["unidad_medida"] = ""
+        else:
+            lista_monedas[i]["valor"] = "{:,}".format(round(lista_monedas[i]["valor"])).replace(",", ".")
+        
+        if lista_monedas[i]["unidad_medida"] == "Dólar":
+            lista_monedas[i]["unidad_medida"] = "Dólares"
+    
+    aux["indicadores"] = lista_monedas
 
     noticias_encontradas = []
     if request.method == 'POST':
