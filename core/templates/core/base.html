@@ -48,6 +48,12 @@
           <li><a href="{% url 'contacto' %}">Contacto</a></li>
 
           {% for group in user.groups.all %}
+            {% if group.name == 'Lector' %}
+              <li><a href="{% url 'donaciones' %}">Donaciones</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% for group in user.groups.all %}
             {% if group.name == 'Periodista' %}
               <li><a href="{% url 'crear_noticia' %}">Crear noticia</a></li>
               <li><a href="{% url 'lista_noticias_publicadas' %}">Editar noticia</a></li>

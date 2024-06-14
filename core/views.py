@@ -20,6 +20,20 @@ from django.core.paginator import Paginator
 def account_locked(request):
     return render(request,"registration/account_locked.html")
 
+def agradecimiento(request):
+    return render(request,"core/paginas/comun/agradecimiento.html")
+
+def donaciones(request):
+    aux = {}
+    response = requests.get('https://mindicador.cl/api')
+    indicadores = response.json()
+    del indicadores["version"]
+    del indicadores["autor"]
+    del indicadores["fecha"]
+
+    aux["dolar"] = indicadores["dolar"]
+    return render(request,"core/paginas/comun/donaciones.html", aux)
+
 def register(request):
     aux = {
         'form': CustomUserCreationForm()

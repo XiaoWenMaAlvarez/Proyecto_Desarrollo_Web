@@ -26,6 +26,8 @@ urlpatterns = [
   path('noticia/<id>/', noticia, name='noticia'),
   path('periodista/<id>/', periodista, name='periodista'),
   path('contacto', contacto, name='contacto'),
+  path('donaciones', donaciones, name='donaciones'),
+  path('agradecimiento', agradecimiento, name='agradecimiento'),
 
   # Periodista
   path('crear_noticia', crear_noticia, name='crear_noticia'),

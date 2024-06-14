@@ -1,0 +1,238 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+<link rel="stylesheet" href="{% static 'core/css/principal.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contenedor-indicadores" style="padding-bottom: 0; ">
+  <img src="{% static 'core/img/money-baner.jpg' %}" class="money-baner" alt="">
+  <div class="indicadores" style="justify-content: center;">
+  <div class="item" style="padding-top: 1rem; margin-right: 0;">
+    <h4 class="name">{{dolar.nombre}}</h4>
+    <p class="value">Valor: {{dolar.valor}} {{dolar.unidad_medida}}</p>
+  </div>
+  </div>  
+</div>
+
+<main class="container py-3">
+  <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal text-body-emphasis">Donaciones</h1>
+    <p class="fs-5 text-body-secondary">Ayuda al periodismo independiente y accede a diversas recompensas.</p>
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">Defensor</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$5 USD</h1>
+          <ul class="list-unstyled mt-3 mb-4" style="text-align: start;">
+            <li>- Crees en la libertad de expresión.</li>
+            <li>- Estás dispuesto a aportar tu granito de arena.</li>
+            <li>- Te informas acerca de lo que pasa a tu alrededor.</li>
+            <li>- A diferencia del resto, no dices, haces.</li>
+          </ul>
+          <div style="justify-content: center;" class="text-center" id="paypal-button-5"></div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">Guerrero</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$10 USD</h1>
+          <ul class="list-unstyled mt-3 mb-4" style="text-align: start;">
+            <li>- Para ti es importante la transparencia.</li>
+            <li>- Piensas que una democracia debe ser legítima</li>
+            <li>- Peleas por el cumplimiento de la ley .</li>
+            <li>- Peleas por el respeto de los derechos.</li>
+          </ul>
+          <div style="justify-content: center;" class="text-center" id="paypal-button-10"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">Paladín</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$20 USD</h1>
+          <ul class="list-unstyled mt-3 mb-4" style="text-align: start;">
+            <li>- Evitas el camino de menor resistencia.</li>
+            <li>- Mientras otros se asustan, tu combates.</li>
+            <li>- No esperas oportunidades, las arrebatas.</li>
+            <li>- Si no lo haces tú, ¿quién más lo hará?</li>
+          </ul>
+          <div style="justify-content: center;" class="text-center" id="paypal-button-20"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+paypal.Button.render({
+  // Configure environment
+  env: 'sandbox',
+  client: {
+    sandbox: 'AStH7hg8N9p6a8GOW2YkzyQ9LR82JizfKBbEQVZ2PbeQeztSxJomQP851OcxDICmN7XxvdGJfVv-9VdJ',
+    production: 'demo_production_client_id'
+  },
+  // Customize button (optional)
+  locale: 'en_US',
+  style: {
+    color: 'blue',
+    shape: 'rect',
+    borderRadius: 10,
+    disableMaxWidth: true,
+    height: 50,
+    tagline: false
+  },
+
+  // Enable Pay Now checkout flow (optional)
+  commit: true,
+
+  // Set up a payment
+  payment: function (data, actions) {
+    return actions.payment.create({
+      transactions: [{
+        amount: {
+          total: '5.00',
+          currency: 'USD'
+        }
+      }]
+    });
+  },
+  
+  // Execute the payment
+  onAuthorize: function (data, actions) {
+    return actions.payment.execute().then(function (details) {
+      let transactionData = {
+        payerID: data.payerID,
+        paymentID: data.paymentID,
+        paymentToken: data.paymentToken,
+        returnUrl: data.returnUrl,
+        transactions: details.transactions
+      };
+
+      window.location.href = "{% url 'agradecimiento' %}";
+    });
+  }
+}, '#paypal-button-5');
+</script>
+
+<script>
+paypal.Button.render({
+  // Configure environment
+  env: 'sandbox',
+  client: {
+    sandbox: 'AStH7hg8N9p6a8GOW2YkzyQ9LR82JizfKBbEQVZ2PbeQeztSxJomQP851OcxDICmN7XxvdGJfVv-9VdJ',
+    production: 'demo_production_client_id'
+  },
+  // Customize button (optional)
+  locale: 'en_US',
+  style: {
+    color: 'blue',
+    shape: 'rect',
+    borderRadius: 10,
+    disableMaxWidth: true,
+    height: 50,
+    tagline: false
+  },
+
+  // Enable Pay Now checkout flow (optional)
+  commit: true,
+
+  // Set up a payment
+  payment: function (data, actions) {
+    return actions.payment.create({
+      transactions: [{
+        amount: {
+          total: '10.00',
+          currency: 'USD'
+        }
+      }]
+    });
+  },
+  
+  // Execute the payment
+  onAuthorize: function (data, actions) {
+    return actions.payment.execute().then(function (details) {
+      let transactionData = {
+        payerID: data.payerID,
+        paymentID: data.paymentID,
+        paymentToken: data.paymentToken,
+        returnUrl: data.returnUrl,
+        transactions: details.transactions
+      };
+
+      window.location.href = "{% url 'agradecimiento' %}";
+    });
+  }
+}, '#paypal-button-10');
+</script>
+
+<script>
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'AStH7hg8N9p6a8GOW2YkzyQ9LR82JizfKBbEQVZ2PbeQeztSxJomQP851OcxDICmN7XxvdGJfVv-9VdJ',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_US',
+    style: {
+      color: 'blue',
+      shape: 'rect',
+      borderRadius: 10,
+      disableMaxWidth: true,
+      height: 50,
+      tagline: false
+    },
+  
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+  
+    // Set up a payment
+    payment: function (data, actions) {
+      return actions.payment.create({
+        transactions: [{
+          amount: {
+            total: '20.00',
+            currency: 'USD'
+          }
+        }]
+      });
+    },
+    
+    // Execute the payment
+    onAuthorize: function (data, actions) {
+      return actions.payment.execute().then(function (details) {
+        let transactionData = {
+          payerID: data.payerID,
+          paymentID: data.paymentID,
+          paymentToken: data.paymentToken,
+          returnUrl: data.returnUrl,
+          transactions: details.transactions
+        };
+  
+        window.location.href = "{% url 'agradecimiento' %}";
+      });
+    }
+  }, '#paypal-button-20');
+  </script>
+
+</main>
+    {% endblock %}
