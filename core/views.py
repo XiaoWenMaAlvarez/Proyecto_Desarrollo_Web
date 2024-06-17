@@ -124,6 +124,15 @@ def index(request):
         if lista_monedas[i]["unidad_medida"] == "Dólar":
             lista_monedas[i]["unidad_medida"] = "Dólares"
     
+    response = requests.get('https://api.coincap.io/v2/assets/ethereum')
+    response = response.json()
+    nvaMoneda = {
+        "nombre": response["data"]["name"],
+        "valor": "{:,}".format(round(float(response["data"]["priceUsd"]))).replace(",", "."),
+        "unidad_medida": "Dólares"
+    }
+
+    lista_monedas.append(nvaMoneda)
     aux["indicadores"] = lista_monedas
 
     noticias_encontradas = []
@@ -786,6 +795,15 @@ def index_api(request):
         if lista_monedas[i]["unidad_medida"] == "Dólar":
             lista_monedas[i]["unidad_medida"] = "Dólares"
     
+    response = requests.get('https://api.coincap.io/v2/assets/ethereum')
+    response = response.json()
+    nvaMoneda = {
+        "nombre": response["data"]["name"],
+        "valor": "{:,}".format(round(float(response["data"]["priceUsd"]))).replace(",", "."),
+        "unidad_medida": "Dólares"
+    }
+
+    lista_monedas.append(nvaMoneda)
     aux["indicadores"] = lista_monedas
 
     noticias_encontradas = []
