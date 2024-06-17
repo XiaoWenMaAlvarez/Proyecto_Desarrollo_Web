@@ -8,7 +8,7 @@
 
 {% block content %}
   <main class="container">
-    <p style="text-align: center; color: red; font-size: 3rem;">{{mensaje}}</p>
+    <p id="message" style="display: none;">{{mensaje}}</p>
     <h1 class="main-title">Formulario de contacto</h1>
     <form action="" method="POST">
       {% csrf_token %}

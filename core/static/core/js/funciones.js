@@ -51,3 +51,8 @@ for(let i = 0; i < arreglo.length; i++) {
   arreglo[i].classList.add("active")
 }
 
+elemento = document.getElementById("message")
+if (elemento.innerText.length != 0){
+  Swal.fire(elemento.innerText);
+}
+

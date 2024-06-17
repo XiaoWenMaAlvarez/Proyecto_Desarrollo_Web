@@ -338,18 +338,30 @@ def editar_noticia(request, id):
         portada = request.FILES.getlist('portada')[0]
         carrusel = request.FILES.getlist('carrusel')
 
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
+
         if len(titulo) > 150:
             aux['mensaje'] = 'El título de la noticia excede el máximo (150 caracteres)'
-            return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+            return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
 
         if noticia.titulo != titulo:
             existe_noticia = Noticia.objects.filter(titulo=titulo).exists()
             if existe_noticia:
                 aux['mensaje'] = 'Ya existe una noticia con ese título'
-                return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+                return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
         if categoria == "0":
             aux['mensaje'] = 'Debe seleccionar una categoría válida'
-            return render(request, 'core/paginas/admin/editar_periodista.html', aux)
+            return render(request, 'core/paginas/periodista/editar_noticia.html', aux)
             
         categoria = CategoriaNoticia.objects.get(id=categoria)
         noticia.titulo = titulo
@@ -493,7 +505,17 @@ def editar_periodista(request, id):
         contrasenia = make_password(request.POST['contrasenia'])
         foto_perfil = request.FILES['foto_perfil']
 
-        
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/paginas/admin/editar_periodista.html', aux)
 
         if periodista.email != correo:
             existe_usuario = User.objects.filter(email=correo).exists()
@@ -627,10 +649,12 @@ class MensajeViewset(viewsets.ModelViewSet):
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    renderer_classes = [JSONRenderer]
 
 class PerfilPeriodistaViewset(viewsets.ModelViewSet):
     queryset = PerfilPeriodista.objects.all()
     serializer_class = PerfilPeriodistaSerializers
+    renderer_classes = [JSONRenderer]
 
 class CategoriaNoticiaViewset(viewsets.ModelViewSet):
     queryset = CategoriaNoticia.objects.all()
@@ -646,11 +670,13 @@ from rest_framework.parsers import MultiPartParser, FormParser
 class NoticiaViewset(viewsets.ModelViewSet):
     queryset = Noticia.objects.all()
     serializer_class = NoticiaSerializers
+    renderer_classes = [JSONRenderer]
     parser_classes = (MultiPartParser, FormParser)
 
 class GaleriaImagenesViewset(viewsets.ModelViewSet):
     queryset = GaleriaImagenes.objects.all()
     serializer_class = GaleriaImagenesSerializers
+    renderer_classes = [JSONRenderer]
 
 class MensajeRechazoNoticiaViewset(viewsets.ModelViewSet):
     queryset = MensajeRechazoNoticia.objects.all()
@@ -660,14 +686,14 @@ class MensajeRechazoNoticiaViewset(viewsets.ModelViewSet):
 class UserGroupListView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserGroupSerializer
+    renderer_classes = [JSONRenderer]
 
 class UserGroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     lookup_url_kwarg = 'id'
     serializer_class = UserGroupSerializer
+    renderer_classes = [JSONRenderer]
 
-
-from django.http import JsonResponse
 
 @login_required
 @permission_required('auth.change_user')
@@ -973,8 +999,6 @@ def lista_periodistas_admin_api(request):
 
     return render(request, 'core/crudapi/admin/lista_periodistas.html', aux)
 
-from django.shortcuts import HttpResponse
-
 class NoticiaDetailView(generics.RetrieveUpdateAPIView):
     queryset = Noticia.objects.all()
     lookup_url_kwarg = 'id'
@@ -1165,6 +1189,18 @@ def editar_noticia_api(request, id):
         portada = request.FILES.getlist('portada')[0]
         carrusel = request.FILES.getlist('carrusel')
 
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/crudapi/admin/editar_periodista.html', aux)
+
         if len(titulo) > 150:
             aux['mensaje'] = 'El título de la noticia excede el máximo (150 caracteres)'
             return render(request, 'core/crudapi/admin/editar_periodista.html', aux)
@@ -1340,7 +1376,19 @@ def editar_periodista_api(request, id):
         descripcion = request.POST['descripcion']
         correo = request.POST['email']
         contrasenia = make_password(request.POST['contrasenia'])
-        foto_perfil = request.FILES['foto_perfil']        
+        foto_perfil = request.FILES['foto_perfil']
+
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': settings.RECAPTCHA_PRIVATE_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+
+        if not(result['success']):
+            aux['mensaje'] = "Error en el reCAPTCHA"
+            return render(request, 'core/crudapi/admin/editar_periodista.html', aux)      
 
         if periodista['email'] != correo or periodista['username'] != username:
             if es_username_o_email_repetido(username, correo):
