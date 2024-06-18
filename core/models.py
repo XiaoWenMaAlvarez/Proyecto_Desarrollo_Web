@@ -82,3 +82,14 @@ class MensajeRechazoNoticia(models.Model):
 
     def __str__(self):
         return self.mensaje_rechazo
+
+class Donacion(models.Model):
+    monto = models.CharField(max_length=20)
+    moneda = models.CharField(max_length=20)
+    id_pago = models.CharField(max_length=100)
+
+    fecha = models.DateField(auto_now=True)
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.descripcion

@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<meta name="csrf-token" content="{{ csrf_token }}">
 <div class="contenedor-indicadores" style="padding-bottom: 0; ">
   <img src="{% static 'core/img/money-baner.jpg' %}" class="money-baner" alt="">
   <div class="indicadores" style="justify-content: center;">
@@ -16,6 +17,8 @@
   </div>
   </div>  
 </div>
+
+<h1 id="id_usuario" style="display: none;">{{user.id}}</h1>
 
 <main class="container py-3">
   <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
@@ -122,13 +125,6 @@ paypal.Button.render({
   // Execute the payment
   onAuthorize: function (data, actions) {
     return actions.payment.execute().then(function (details) {
-      let transactionData = {
-        payerID: data.payerID,
-        paymentID: data.paymentID,
-        paymentToken: data.paymentToken,
-        returnUrl: data.returnUrl,
-        transactions: details.transactions
-      };
 
       window.location.href = "{% url 'agradecimiento' %}";
     });
@@ -163,7 +159,7 @@ paypal.Button.render({
     return actions.payment.create({
       transactions: [{
         amount: {
-          total: '10.00',
+          total: '1.00',
           currency: 'USD'
         }
       }]
@@ -174,12 +170,25 @@ paypal.Button.render({
   onAuthorize: function (data, actions) {
     return actions.payment.execute().then(function (details) {
       let transactionData = {
-        payerID: data.payerID,
-        paymentID: data.paymentID,
-        paymentToken: data.paymentToken,
-        returnUrl: data.returnUrl,
-        transactions: details.transactions
+        monto: details.transactions[0].amount.total,
+        moneda: details.transactions[0].amount.currency,
+        id_pago: data.paymentToken,
+        id_usuario: elemento = document.getElementById("id_usuario").innerText,
       };
+
+      function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      }
+
+      let myHeaders = new Headers()
+      myHeaders.append('Content-type', 'application/json')
+      myHeaders.append('X-CSRFToken', getCSRFToken())
+
+      fetch('http://127.0.0.1:8000/api/donacion/', {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(transactionData)
+      })
 
       window.location.href = "{% url 'agradecimiento' %}";
     });

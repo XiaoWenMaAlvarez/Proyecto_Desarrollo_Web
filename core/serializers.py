@@ -65,3 +65,8 @@ class UserGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'groups']
+
+class DonacionSerializers(serializers.ModelSerializer):
+  class Meta:
+    model = Donacion
+    fields = '__all__'

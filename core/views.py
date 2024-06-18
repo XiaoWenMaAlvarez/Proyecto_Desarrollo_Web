@@ -1482,3 +1482,6 @@ def busqueda_api(request, page, busqueda):
     aux ['noticias_encontradas'] = page_obj
 
     return render(request, 'core/crudapi/index.html', aux)
+class DonacionViewSet(viewsets.ModelViewSet):
+    queryset = Donacion.objects.all()
+    serializer_class = DonacionSerializers

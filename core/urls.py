@@ -13,6 +13,8 @@ router.register('estado_noticia', EstadoNoticiaViewset)
 router.register('noticia', NoticiaViewset)
 router.register('galeria_imagenes', GaleriaImagenesViewset)
 router.register('mensaje_rechazo_noticia', MensajeRechazoNoticiaViewset)
+router.register('donacion', DonacionViewSet)
+
 
 urlpatterns = [
   path('register', register, name='register'),
