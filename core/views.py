@@ -32,6 +32,11 @@ def donaciones(request):
     del indicadores["fecha"]
 
     aux["dolar"] = indicadores["dolar"]
+    aux["defensor"] = "{:,}".format(round(indicadores["dolar"]["valor"] * 5)).replace(",", ".")
+    aux["guerrero"] = "{:,}".format(round(indicadores["dolar"]["valor"] * 10)).replace(",", ".")
+    aux["paladin"] = "{:,}".format(round(indicadores["dolar"]["valor"] * 20)).replace(",", ".")
+
+    
     return render(request,"core/paginas/comun/donaciones.html", aux)
 
 def register(request):
