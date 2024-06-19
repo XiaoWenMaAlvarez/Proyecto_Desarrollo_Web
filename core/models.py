@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 
 """
@@ -22,7 +23,7 @@ class TipoUsuario(models.Model):
 
 class PerfilPeriodista(models.Model):
     descripcion = models.CharField(max_length=100)
-    foto_perfil = models.ImageField(upload_to='foto_periodista', blank=False, default='avatar-periodista.jpg')
+    foto_perfil = CloudinaryField('image')
     id_usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -47,7 +48,7 @@ class Noticia(models.Model):
     titulo = models.CharField(max_length=150, unique=True)
     ubicacion = models.CharField(max_length=50)
     fecha = models.DateField(auto_now=True)
-    portada = models.ImageField(upload_to='portadas_noticias', blank=False, default='portada.jpg')
+    portada = CloudinaryField('image')
     cuerpo = models.TextField()
 
     id_autor = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -69,7 +70,7 @@ class Mensaje(models.Model):
 
 
 class GaleriaImagenes(models.Model):
-    imagen = models.ImageField(upload_to='imagenes_noticias', blank=True)
+    imagen = CloudinaryField('image')
     id_noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
 
     def __str__(self):

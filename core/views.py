@@ -1485,6 +1485,7 @@ def busqueda_api(request, page, busqueda):
 class DonacionViewSet(viewsets.ModelViewSet):
     queryset = Donacion.objects.all()
     serializer_class = DonacionSerializers
+    renderer_classes = [JSONRenderer]
 
 @login_required
 def lista_donaciones(request):

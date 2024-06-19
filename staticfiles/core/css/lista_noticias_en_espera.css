@@ -1,0 +1,7 @@
+.link {
+  color: blue !important;
+}
+
+.link:hover {
+  color: lightblue !important;
+}

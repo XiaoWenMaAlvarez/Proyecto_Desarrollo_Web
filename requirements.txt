@@ -4,9 +4,11 @@ crispy-bootstrap4
 pillow
 django-recaptcha
 requests
-psycopg2
+psycopg2-binary
 djangorestframework
 django-admin-confirm
 django-axes
 reportlab
 django-admin-interface
+whitenoise
+cloudinary
