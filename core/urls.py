@@ -3,6 +3,7 @@ from django.urls import path, include
 from .views import *
 
 from rest_framework import routers
+from django.contrib.auth import views as auth_views
 
 router = routers.DefaultRouter()
 router.register('mensaje', MensajeViewset)
@@ -17,6 +18,11 @@ router.register('donacion', DonacionViewSet)
 
 
 urlpatterns = [
+  path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+  path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+  path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+  path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
   path('register', register, name='register'),
   path('account_locked', account_locked, name='account_locked'),
 

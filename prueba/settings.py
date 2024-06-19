@@ -166,3 +166,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 RECAPTCHA_PUBLIC_KEY = '6Lekmd8pAAAAACY6pek-W_JctCA3wM3G1qgGw2sU'
 RECAPTCHA_PRIVATE_KEY = '6Lekmd8pAAAAAAddf0N158G20Y629p1EfZQO4vvz'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'caosnews2@gmail.com'
+EMAIL_HOST_PASSWORD = 'bpnd niog zasu dbqu'
+DEFAULT_FROM_EMAIL = 'caosnews2@gmail.com'

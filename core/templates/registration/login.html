@@ -28,6 +28,7 @@
       {{ form|crispy }}
       <input type="submit" class="btn btn-primary" value="Iniciar sesión">
       <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate gratis</a></p>
+      <p>¿Olvidaste tu contraseña? <a href="{% url 'password_reset' %}">Recuperar contraseña</a></p>
     </form>
     
   </main>
