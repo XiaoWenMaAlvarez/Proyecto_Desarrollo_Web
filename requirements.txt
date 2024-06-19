@@ -9,3 +9,4 @@ djangorestframework
 django-admin-confirm
 django-axes
 reportlab
+django-admin-interface
