@@ -39,3 +39,11 @@ admin.site.register(Noticia, NoticiaAdmin)
 admin.site.register(GaleriaImagenes, GaleriaImagenesAdmin)
 admin.site.register(MensajeRechazoNoticia, MensajeRechazoNoticiaAdmin)
 admin.site.register(Mensaje, MensajeAdmin)
+
+from django.contrib.auth import views as auth_views
+from .forms import CaptchaAuthenticationForm
+
+class AdminLoginView(auth_views.LoginView):
+    authentication_form = CaptchaAuthenticationForm
+
+admin.site.login = AdminLoginView.as_view()
