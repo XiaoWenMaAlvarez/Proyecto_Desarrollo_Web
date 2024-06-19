@@ -30,6 +30,9 @@ urlpatterns = [
   path('contacto', contacto, name='contacto'),
   path('donaciones', donaciones, name='donaciones'),
   path('agradecimiento', agradecimiento, name='agradecimiento'),
+  path('lista_donaciones', lista_donaciones, name='lista_donaciones'),
+  path('donacion_detalle/<id>/', donacion_detalle, name='donacion_detalle'),
+  path('descargar_donacion/<id>/', descargar_donacion, name='descargar_donacion'),
 
   # Periodista
   path('crear_noticia', crear_noticia, name='crear_noticia'),

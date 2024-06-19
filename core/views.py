@@ -1485,3 +1485,60 @@ def busqueda_api(request, page, busqueda):
 class DonacionViewSet(viewsets.ModelViewSet):
     queryset = Donacion.objects.all()
     serializer_class = DonacionSerializers
+
+@login_required
+def lista_donaciones(request):
+    id = request.user.id
+    list_donaciones = Donacion.objects.filter(id_usuario=id)
+
+    paginator = Paginator(list_donaciones, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    aux = {
+        'lista_donaciones' : page_obj
+    }
+    aux['mensaje'] = id
+    return render(request, 'core/paginas/comun/lista_donaciones.html', aux)
+
+@login_required
+def donacion_detalle(request, id):
+    id_usuario = request.user.id
+    donacion = Donacion.objects.get(id=id)
+
+    if donacion.id_usuario != id_usuario:
+        redirect(to='lista_donaciones')
+
+    aux = {
+        'donacion' : donacion
+    }
+    return render(request, 'core/paginas/comun/donacion_detalle.html', aux)    
+
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+    
+@login_required
+def descargar_donacion(request, id):
+    id_usuario = request.user.id
+    donacion = Donacion.objects.get(id=id)
+
+    if donacion.id_usuario != id_usuario:
+        redirect(to='lista_donaciones')
+
+    text = "Identificador de pago: " + donacion.id_pago + "\n" + "Fecha de pago: " + str(donacion.fecha) + "\n" + \
+    "Monto pagado: " + donacion.monto + "\n" "Moneda de pago: " + donacion.moneda + "\n"
+    buffer = BytesIO()
+    # Create a canvas object that will write to the BytesIO object
+    p = canvas.Canvas(buffer)
+    lines = text.splitlines()
+    y_position = 750
+    for line in lines:
+        p.drawString(100, y_position, line)
+        y_position -= 20  # Espacio entre líneas
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type='application/pdf')

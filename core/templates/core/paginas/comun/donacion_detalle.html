@@ -1,0 +1,18 @@
+{% extends 'core/base.html'%}
+
+{% load static %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'core/css/contacto.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="container">
+    <h1>Identificador de pago: {{donacion.id_pago}}</h1>
+    <h1>Monto pagado: {{donacion.monto}}</h1>
+    <h1>Moneda de pago: {{donacion.moneda}}</h1>
+    <h1 style="margin-bottom: 2rem;">Fecha de pago: {{donacion.fecha}}</h1>
+
+    <a href="{% url 'descargar_donacion' donacion.id %}" target="_blank" class="btn btn-danger">Descargar PDF</a>
+  </main>
+  {% endblock %}
