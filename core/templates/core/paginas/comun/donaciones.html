@@ -141,7 +141,7 @@ paypal.Button.render({
       myHeaders.append('Content-type', 'application/json')
       myHeaders.append('X-CSRFToken', getCSRFToken())
 
-      fetch('http://127.0.0.1:8000/api/donacion/', {
+      fetch('https://proyecto-desarrollo-web-two.vercel.app/api/donacion/', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(transactionData)
@@ -205,7 +205,7 @@ paypal.Button.render({
       myHeaders.append('Content-type', 'application/json')
       myHeaders.append('X-CSRFToken', getCSRFToken())
 
-      fetch('http://127.0.0.1:8000/api/donacion/', {
+      fetch('https://proyecto-desarrollo-web-two.vercel.app/api/donacion/', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(transactionData)
@@ -269,7 +269,7 @@ paypal.Button.render({
         myHeaders.append('Content-type', 'application/json')
         myHeaders.append('X-CSRFToken', getCSRFToken())
 
-        fetch('http://127.0.0.1:8000/api/donacion/', {
+        fetch('https://proyecto-desarrollo-web-two.vercel.app/api/donacion/', {
           method: 'POST',
           headers: myHeaders,
           body: JSON.stringify(transactionData)
