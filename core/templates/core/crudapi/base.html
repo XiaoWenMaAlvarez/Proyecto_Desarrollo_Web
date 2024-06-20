@@ -50,6 +50,7 @@
           {% for group in user.groups.all %}
             {% if group.name == 'Lector' %}
               <li><a href="{% url 'donaciones' %}">Donaciones</a></li>
+              <li><a href="{% url 'lista_donaciones' %}">Lista de donaciones</a></li>
             {% endif %}
           {% endfor %}
 
