@@ -1528,8 +1528,10 @@ def descargar_donacion(request, id):
     if donacion.id_usuario != id_usuario:
         redirect(to='lista_donaciones')
 
-    text = "Identificador de pago: " + donacion.id_pago + "\n" + "Fecha de pago: " + str(donacion.fecha) + "\n" + \
-    "Monto pagado: " + donacion.monto + "\n" "Moneda de pago: " + donacion.moneda + "\n"
+    text = "Monto: " + donacion.monto + "\n" + "Moneda de pago: " + donacion.moneda + "\n\n" + \
+    "Para: " + "Caos News" + "\n" + "Desde: " + request.user.username + "\n\n" +\
+    "Fecha de pago: " + donacion.fecha.strftime("%d-%m-%Y") + "\n" + "Medio de pago: Paypal" + "\n" "Identificador de pago: " + donacion.id_pago
+
     buffer = BytesIO()
     # Create a canvas object that will write to the BytesIO object
     p = canvas.Canvas(buffer)

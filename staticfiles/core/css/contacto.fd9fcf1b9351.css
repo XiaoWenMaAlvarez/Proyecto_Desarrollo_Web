@@ -27,14 +27,9 @@
   top: 1rem;
 }
 
-.pdf-button {
-  display: flex;
-  justify-content: center;
-}
-
 @media screen and (min-width: 734px) {
   .donacion-imagen {
-    width: 15rem;
+    width: 10rem;
   }
 }
 

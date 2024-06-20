@@ -7,12 +7,23 @@
 {% endblock %}
 
 {% block content %}
-  <main class="container">
-    <h1>Identificador de pago: {{donacion.id_pago}}</h1>
-    <h1>Monto pagado: {{donacion.monto}}</h1>
-    <h1>Moneda de pago: {{donacion.moneda}}</h1>
-    <h1 style="margin-bottom: 2rem;">Fecha de pago: {{donacion.fecha}}</h1>
-
-    <a href="{% url 'descargar_donacion' donacion.id %}" target="_blank" class="btn btn-danger">Descargar PDF</a>
+  <main>
+    <div class="container donacion shadow-lg">
+      <img src="{% static 'core/img/logo-dark.svg' %}" class="donacion-imagen" alt="">
+      <h1>Monto: {{donacion.monto}}</h1>
+      <h1>Moneda de pago: {{donacion.moneda}}</h1>
+      <br>
+      <h1>Para: Caos News</h1>
+      <h1>Desde: {{user.username}}</h1>
+      <br>
+      <h1>Fecha de pago: {{donacion.fecha}}</h1>
+      <h1>Medio de pago: Paypal</h1>
+      <h1>Identificador de pago: {{donacion.id_pago}}</h1>
+    </div>
+    
+    <div class="pdf-button">
+      <a href="{% url 'descargar_donacion' donacion.id %}" target="_blank" class="btn btn-danger">Descargar PDF</a>
+    </div>
+    
   </main>
   {% endblock %}

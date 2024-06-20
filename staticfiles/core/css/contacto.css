@@ -11,3 +11,35 @@
   margin-top: 3rem;
   margin-bottom: 2rem;
 }
+
+.donacion {
+  background-color: lightgray;
+  margin-bottom: 2rem;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  position: relative;
+}
+
+.donacion-imagen {
+  position: absolute;
+  width: 5rem;
+  right: 1rem;
+  top: 1rem;
+}
+
+.pdf-button {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 734px) {
+  .donacion-imagen {
+    width: 15rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .donacion-imagen {
+    width: 20rem;
+  }
+}

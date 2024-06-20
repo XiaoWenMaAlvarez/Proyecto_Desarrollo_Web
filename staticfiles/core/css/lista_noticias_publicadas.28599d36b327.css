@@ -1,0 +1,14 @@
+.link {
+  color: red !important;
+}
+
+.link:hover {
+  color: lightblue !important;
+}
+
+.button-container {
+  padding-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

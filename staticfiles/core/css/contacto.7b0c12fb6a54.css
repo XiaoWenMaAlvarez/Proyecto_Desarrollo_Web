@@ -1,0 +1,18 @@
+.main-title {
+  padding-top: 1rem;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.donacion {
+  background-color: lightgray;
+  margin-bottom: 2rem;
+}
