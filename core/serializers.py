@@ -20,6 +20,12 @@ class PerfilPeriodistaSerializers(serializers.ModelSerializer):
     model = PerfilPeriodista
     fields = '__all__'
 
+  def to_representation(self,instance):
+    representation = super().to_representation(instance)
+    representation['foto_perfil'] = instance.foto_perfil.url
+    return representation
+
+
 class PerfilPeriodistaSerializers2(serializers.ModelSerializer):
   class Meta:
     model = PerfilPeriodista
@@ -45,11 +51,19 @@ class NoticiaSerializers(serializers.ModelSerializer):
   class Meta:
     model = Noticia
     fields = '__all__'
+  def to_representation(self,instance):
+    representation = super().to_representation(instance)
+    representation['portada'] = instance.portada.url
+    return representation
 
 class GaleriaImagenesSerializers(serializers.ModelSerializer):
   class Meta:
     model = GaleriaImagenes
     fields = '__all__'
+  def to_representation(self,instance):
+    representation = super().to_representation(instance)
+    representation['imagen'] = instance.imagen.url
+    return representation
 
 class MensajeRechazoNoticiaSerializers(serializers.ModelSerializer):
   class Meta:

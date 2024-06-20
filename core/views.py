@@ -64,7 +64,7 @@ def register(request):
         user.groups.add(group)
     return render(request,"registration/register.html", aux)
 
-
+import urllib.parse
 def busqueda(request, page, busqueda):
     ultimas_noticias = Noticia.objects.filter(id_estado_noticia=2).order_by('-fecha')[:5]
     aux = {
@@ -74,7 +74,7 @@ def busqueda(request, page, busqueda):
     noticias_encontradas = []
 
     if request.method == 'POST':
-        busqueda = request.POST['busqueda']
+        busqueda = urllib.parse.unquote(request.POST['busqueda'])
 
     aux["busqueda"] = busqueda
     noticias_encontradas = Noticia.objects.raw("""
@@ -712,7 +712,7 @@ class UserGroupDetailView(generics.RetrieveUpdateDestroyAPIView):
 @login_required
 @permission_required('auth.change_user')
 def lista_mensajes_api(request):
-    response = requests.get('http://127.0.0.1:8000/api/mensaje/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/mensaje/')
     mensajes = response.json()
 
     paginator = Paginator(mensajes, 10)
@@ -728,7 +728,7 @@ def lista_mensajes_api(request):
 @login_required
 @permission_required('auth.change_user')
 def mensaje_api(request, id):
-    response = requests.get(f'http://127.0.0.1:8000/api/mensaje/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/mensaje/{id}')
     mensaje = response.json()
     aux = {
         "mensaje": mensaje
@@ -736,7 +736,7 @@ def mensaje_api(request, id):
     return render(request, 'core/crudapi/admin/mensaje.html', aux)
 
 def lista_periodistas_api(request):
-    response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/perfil_periodista/')
     lista_perfil_periodistas = response.json()
 
     paginator = Paginator(lista_perfil_periodistas, 10)
@@ -771,7 +771,7 @@ def aplicar_busqueda(noticias, busqueda):
         noticias.pop(i)
 
 def index_api(request):
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     noticias = response.json()
     noticias = list(filter(es_noticia_aprobada, noticias))
     ordenar_noticias_recientes(noticias)
@@ -815,7 +815,7 @@ def index_api(request):
     if request.method == 'POST':
         busqueda = request.POST['busqueda']
         aux['busqueda'] = busqueda
-        response = requests.get('http://127.0.0.1:8000/api/noticia/')
+        response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
         noticias_encontradas = response.json()
         noticias_encontradas = list(filter(es_noticia_aprobada, noticias_encontradas))
         aplicar_busqueda(noticias_encontradas, busqueda)
@@ -834,13 +834,13 @@ def index_api(request):
     return render(request, 'core/crudapi/index.html', aux)
 
 def noticia_api(request, id):
-    response = requests.get(f'http://127.0.0.1:8000/api/noticia/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/noticia/{id}')
     noticia = response.json()
     aux = {
         'noticia': noticia,
     }
 
-    response = requests.get('http://127.0.0.1:8000/api/galeria_imagenes/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/')
     galeria = response.json()
     galeria = list(filter(lambda imagen_galeria: imagen_galeria["id_noticia"] == int(id), galeria))
     aux ['galeria'] = galeria
@@ -848,10 +848,10 @@ def noticia_api(request, id):
     return render(request, 'core/crudapi/comun/noticia.html', aux)
 
 def lista_categorias_api(request):
-    response = requests.get('http://127.0.0.1:8000/api/categoria_noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/categoria_noticia/')
     lista_categorias = response.json()
 
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     lista_noticias = response.json()
     lista_noticias = list(filter(es_noticia_aprobada, lista_noticias))
 
@@ -872,11 +872,11 @@ def obtenerPeriodista(lista_periodistas, id):
 
 
 def periodista_api(request, id):
-    response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/perfil_periodista/')
     perfil_periodista = response.json()
     perfil_periodista = obtenerPeriodista(perfil_periodista, int(id))
 
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     lista_noticias = response.json()
     lista_noticias = list(filter(es_noticia_aprobada, lista_noticias))
     lista_noticias = list(filter(lambda noticia: noticia["id_autor"]["id"] == int(id), lista_noticias))
@@ -927,7 +927,7 @@ def contacto_api(request):
             "mensaje": mensaje,
         }
 
-        r = requests.post('http://127.0.0.1:8000/api/mensaje/', data=data)
+        r = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/mensaje/', data=data)
             
         aux['mensaje'] = 'Mensaje enviado con éxito'
         aux['nombre_completo'] = ""
@@ -937,7 +937,7 @@ def contacto_api(request):
     return render(request, 'core/crudapi/comun/contacto.html', aux)
 
 def obtener_id_noticia(titulo):
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     noticias = response.json()
     for noticia in noticias:
         if(noticia["titulo"] == titulo):
@@ -948,7 +948,7 @@ def obtener_id_noticia(titulo):
 @permission_required('core.change_noticia')
 def lista_noticias_publicadas_api(request):
     id = request.user.id
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     lista_noticias = response.json()
     lista_noticias = list(filter(lambda noticia: noticia["id_autor"]["id"] == int(id), lista_noticias))
 
@@ -965,13 +965,13 @@ def lista_noticias_publicadas_api(request):
 @login_required
 @permission_required('core.change_noticia')
 def noticia_rechazada_api(request, id):
-    response = requests.get(f'http://127.0.0.1:8000/api/noticia/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/noticia/{id}')
     noticia = response.json()
     aux = {
         'noticia': noticia
     }
 
-    response = requests.get('http://127.0.0.1:8000/api/galeria_imagenes/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/')
     galeria = response.json()
     galeria = list(filter(lambda imagen_galeria: imagen_galeria["id_noticia"] == int(id), galeria))
     aux ['galeria'] = galeria
@@ -980,7 +980,7 @@ def noticia_rechazada_api(request, id):
     if(noticia["id_autor"]["id"] != id_usuario):
         return redirect(to='lista_noticias_publicadas_api')
     
-    response = requests.get('http://127.0.0.1:8000/api/mensaje_rechazo_noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/mensaje_rechazo_noticia/')
     mensaje_rechazo = response.json()
     mensaje_rechazo = list(filter(lambda rechazo: rechazo["id_noticia"] == int(id), mensaje_rechazo))
     aux ['mensaje_rechazo'] = mensaje_rechazo[0]
@@ -991,7 +991,7 @@ def noticia_rechazada_api(request, id):
 @permission_required('auth.delete_user')
 def lista_noticias_en_espera_api(request):
 
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     lista_noticias = response.json()
     lista_noticias = list(filter(lambda noticia: noticia["id_estado_noticia"]["id"] == 1, lista_noticias))
 
@@ -1007,7 +1007,7 @@ def lista_noticias_en_espera_api(request):
 @login_required
 @permission_required('auth.change_user')
 def lista_periodistas_admin_api(request):    
-    response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/perfil_periodista/')
     list_periodistas = response.json()
     list_periodistas = list(map(lambda perfil: perfil["id_usuario"], list_periodistas))    
 
@@ -1031,11 +1031,11 @@ class NoticiaDetailView(generics.RetrieveUpdateAPIView):
 @permission_required('auth.change_user')
 def noticia_en_espera_api(request, id):
     aux = {}
-    response = requests.get(f'http://127.0.0.1:8000/api/noticia/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/noticia/{id}')
     noticia = response.json()
     aux ['noticia'] = noticia
 
-    response = requests.get('http://127.0.0.1:8000/api/galeria_imagenes/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/')
     galeria = response.json()
     galeria = list(filter(lambda imagen_galeria: imagen_galeria["id_noticia"] == int(id), galeria))
     aux ['galeria'] = galeria
@@ -1055,14 +1055,14 @@ def noticia_en_espera_api(request, id):
         noticia["id_categoria"] = noticia["id_categoria"]["id"]
         noticia["id_estado_noticia"] = 3
 
-        r1 = requests.put(f'http://127.0.0.1:8000/api/editar_noticia_api/{id}/', data=noticia, files=files)
+        r1 = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/editar_noticia_api/{id}/', data=noticia, files=files)
 
         mensaje = request.POST.get('mensaje')
         data = {
             "mensaje_rechazo": mensaje,
             "id_noticia": int(id),
         }
-        r2 = requests.post('http://127.0.0.1:8000/api/mensaje_rechazo_noticia/', data=data)
+        r2 = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/mensaje_rechazo_noticia/', data=data)
 
         return redirect(to='lista_noticias_en_espera')
 
@@ -1072,7 +1072,7 @@ def noticia_en_espera_api(request, id):
 @permission_required('auth.change_user')
 def aceptar_noticia_api(request, id):
     aux = {}
-    response = requests.get(f'http://127.0.0.1:8000/api/noticia/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/noticia/{id}')
     noticia = response.json()
 
     file_url = noticia["portada"]
@@ -1089,7 +1089,7 @@ def aceptar_noticia_api(request, id):
     noticia["id_categoria"] = noticia["id_categoria"]["id"]
     noticia["id_estado_noticia"] = 2
 
-    r1 = requests.put(f'http://127.0.0.1:8000/api/editar_noticia_api/{id}/', data=noticia, files=files)
+    r1 = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/editar_noticia_api/{id}/', data=noticia, files=files)
 
     aux ['mensaje'] = 'Noticia aceptada con éxito'
 
@@ -1100,7 +1100,7 @@ class NoticiaListView(generics.ListCreateAPIView):
     serializer_class = NoticiaSerializer2
 
 def es_titulo_repetido(titulo):
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     noticias = response.json()
     for noticia in noticias:
         if(noticia["titulo"] == titulo):
@@ -1110,7 +1110,7 @@ def es_titulo_repetido(titulo):
 @login_required
 @permission_required('core.add_noticia')
 def crear_noticia_api(request):
-    response = requests.get('http://127.0.0.1:8000/api/categoria_noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/categoria_noticia/')
     lista_categorias = response.json()
 
     aux = {
@@ -1165,7 +1165,7 @@ def crear_noticia_api(request):
 
             files = {'portada': (portada.name, portada.read(), portada.content_type)}
 
-            response = requests.post('http://127.0.0.1:8000/api/crear_noticia_api', data=noticia, files=files)
+            response = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/crear_noticia_api', data=noticia, files=files)
             response = response.json()
             idNvaNoticia = response["id"]
             
@@ -1174,7 +1174,7 @@ def crear_noticia_api(request):
                 data = {
                     "id_noticia": idNvaNoticia
                 }
-                response = requests.post('http://127.0.0.1:8000/api/galeria_imagenes/', data=data, files=files)
+                response = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/', data=data, files=files)
             
             aux['mensaje'] = 'Noticia creada con éxito'
             aux['titulo'] = ""
@@ -1188,7 +1188,7 @@ def crear_noticia_api(request):
 @login_required
 @permission_required('core.change_noticia')
 def editar_noticia_api(request, id):
-    response = requests.get(f'http://127.0.0.1:8000/api/editar_noticia_api/{id}/')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/editar_noticia_api/{id}/')
     noticia = response.json()
 
     id_usuario = request.user.id
@@ -1196,7 +1196,7 @@ def editar_noticia_api(request, id):
     if(noticia["id_autor"] != id_usuario):
         return redirect(to='lista_noticias_publicadas')
 
-    response = requests.get('http://127.0.0.1:8000/api/categoria_noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/categoria_noticia/')
     lista_categorias = response.json()
 
     aux = {
@@ -1245,22 +1245,22 @@ def editar_noticia_api(request, id):
 
         files = {'portada': (portada.name, portada.read(), portada.content_type)}
 
-        response = requests.put(f'http://127.0.0.1:8000/api/editar_noticia_api/{id}/', data=noticia, files=files)
+        response = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/editar_noticia_api/{id}/', data=noticia, files=files)
 
-        response = requests.get('http://127.0.0.1:8000/api/galeria_imagenes/')
+        response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/')
         lista_galeria = response.json()
         lista_galeria = list(filter(lambda imagen: imagen["id_noticia"] == int(id), lista_galeria))
 
         for imagen in lista_galeria:
             idImagen= imagen["id"]
-            response = requests.delete(f'http://127.0.0.1:8000/api/galeria_imagenes/{idImagen}/')
+            response = requests.delete(f'https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/{idImagen}/')
         
         for imagen in carrusel:
             files = {'imagen': (imagen.name, imagen.read(), imagen.content_type)}
             data = {
                 "id_noticia": int(id)
             }
-            response = requests.post('http://127.0.0.1:8000/api/galeria_imagenes/', data=data, files=files)
+            response = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/galeria_imagenes/', data=data, files=files)
 
         aux['mensaje'] = 'Noticia modificada con éxito'
 
@@ -1269,19 +1269,19 @@ def editar_noticia_api(request, id):
 @login_required
 @permission_required('core.delete_noticia')
 def eliminar_noticia_api(request,id):
-    response = requests.get(f'http://127.0.0.1:8000/api/editar_noticia_api/{id}/')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/editar_noticia_api/{id}/')
     noticia = response.json()
     id_usuario = request.user.id
 
     if(noticia["id_autor"] != id_usuario):
         return redirect(to='lista_noticias_publicadas')
     
-    response = requests.delete(f'http://127.0.0.1:8000/api/noticia/{id}/')
+    response = requests.delete(f'https://proyecto-desarrollo-web-two.vercel.app/api/noticia/{id}/')
     return redirect(to='lista_noticias_publicadas')
 
 
 def es_username_o_email_repetido(username, email):
-    response = requests.get('http://127.0.0.1:8000/api/user/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/user/')
     usuarios = response.json()
     for usuario in usuarios:
         if(usuario["username"] == username or usuario["email"] == email ):
@@ -1339,7 +1339,7 @@ def crear_periodista_api(request):
                 "password": contrasenia,
             }
 
-            response = requests.post('http://127.0.0.1:8000/api/user/', data=data)
+            response = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/user/', data=data)
             response = response.json()
             idNvoUsuario = response["id"]
 
@@ -1348,7 +1348,7 @@ def crear_periodista_api(request):
                 "groups": [2]
             }
 
-            response = requests.put(f'http://127.0.0.1:8000/api/usuario_grupos/{idNvoUsuario}/', data=data)
+            response = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/usuario_grupos/{idNvoUsuario}/', data=data)
 
             data = {
                 "id_usuario": idNvoUsuario,
@@ -1357,7 +1357,7 @@ def crear_periodista_api(request):
 
             files = {'foto_perfil': (foto_perfil.name, foto_perfil.read(), foto_perfil.content_type)}
 
-            response = requests.post('http://127.0.0.1:8000/api/crear_perfil_periodista_api', data=data, files=files)
+            response = requests.post('https://proyecto-desarrollo-web-two.vercel.app/api/crear_perfil_periodista_api', data=data, files=files)
             
             aux['mensaje'] = 'Periodista creado con éxito'
             aux['username'] = ""
@@ -1371,7 +1371,7 @@ def crear_periodista_api(request):
     return render(request, 'core/crudapi/admin/crear_periodista.html',aux)
 
 def obtener_perfil_periodista(id_periodista):
-    response = requests.get('http://127.0.0.1:8000/api/perfil_periodista/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/perfil_periodista/')
     perfiles = response.json()
     for perfil in perfiles:
         if(perfil["id_usuario"]["id"] == int(id_periodista)):
@@ -1382,7 +1382,7 @@ def obtener_perfil_periodista(id_periodista):
 @login_required
 @permission_required('auth.change_user')
 def editar_periodista_api(request, id):
-    response = requests.get(f'http://127.0.0.1:8000/api/user/{id}')
+    response = requests.get(f'https://proyecto-desarrollo-web-two.vercel.app/api/user/{id}')
     periodista = response.json()
 
     perfil_periodista = obtener_perfil_periodista(id)
@@ -1426,7 +1426,7 @@ def editar_periodista_api(request, id):
             "password": contrasenia,
         }
 
-        response = requests.put(f'http://127.0.0.1:8000/api/user/{id}/', data=data)
+        response = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/user/{id}/', data=data)
 
         id_perfil_periodista = perfil_periodista["id"]
 
@@ -1437,7 +1437,7 @@ def editar_periodista_api(request, id):
 
         files = {'foto_perfil': (foto_perfil.name, foto_perfil.read(), foto_perfil.content_type)}
 
-        response = requests.put(f'http://127.0.0.1:8000/api/crear_perfil_periodista_api/{id_perfil_periodista}/', data=data, files=files)
+        response = requests.put(f'https://proyecto-desarrollo-web-two.vercel.app/api/crear_perfil_periodista_api/{id_perfil_periodista}/', data=data, files=files)
 
         aux['mensaje'] = 'Periodista modificado con éxito'
 
@@ -1446,11 +1446,11 @@ def editar_periodista_api(request, id):
 @login_required
 @permission_required('auth.delete_user')
 def eliminar_periodista_api(request, id):
-    response = requests.delete(f'http://127.0.0.1:8000/api/user/{id}')
+    response = requests.delete(f'https://proyecto-desarrollo-web-two.vercel.app/api/user/{id}')
     return redirect(to='lista_periodistas_admin')
 
 def busqueda_api(request, page, busqueda):
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     noticias = response.json()
     noticias = list(filter(es_noticia_aprobada, noticias))
     ordenar_noticias_recientes(noticias)
@@ -1460,10 +1460,10 @@ def busqueda_api(request, page, busqueda):
 
     noticias_encontradas = []
     if request.method == 'POST':
-        busqueda = request.POST['busqueda']
+        busqueda = urllib.parse.unquote(request.POST['busqueda'])
     
     aux['busqueda'] = busqueda
-    response = requests.get('http://127.0.0.1:8000/api/noticia/')
+    response = requests.get('https://proyecto-desarrollo-web-two.vercel.app/api/noticia/')
     noticias_encontradas = response.json()
     noticias_encontradas = list(filter(es_noticia_aprobada, noticias_encontradas))
     aplicar_busqueda(noticias_encontradas, busqueda)
