@@ -72,6 +72,7 @@ def busqueda(request, page, busqueda):
     }
 
     noticias_encontradas = []
+    busqueda = urllib.parse.unquote(busqueda)
 
     if request.method == 'POST':
         busqueda = urllib.parse.unquote(request.POST['busqueda'])
@@ -1459,6 +1460,7 @@ def busqueda_api(request, page, busqueda):
     }
 
     noticias_encontradas = []
+    busqueda = urllib.parse.unquote(busqueda)
     if request.method == 'POST':
         busqueda = urllib.parse.unquote(request.POST['busqueda'])
     
