@@ -961,7 +961,7 @@ def lista_noticias_publicadas_api(request):
         'lista_noticias' : page_obj
     }
     aux['mensaje'] = id
-    return render(request, 'core/paginas/periodista/lista_noticias_publicadas.html', aux)
+    return render(request, 'core/crudapi/periodista/lista_noticias_publicadas.html', aux)
 
 @login_required
 @permission_required('core.change_noticia')
